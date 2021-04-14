@@ -4,7 +4,8 @@ apt-get -yq update
 apt-get install -yq \
     ca-certificates \
     curl \
-    ntp
+    ntp \
+    wireguard
 
 
 # k3s

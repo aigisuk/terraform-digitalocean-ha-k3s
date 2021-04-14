@@ -1,0 +1,7 @@
+.terraform.*
+.terraform/
+terraform.tfstate*
+terraform.tfvars
+terraform.txt
+.auto.tfvars
+creds/

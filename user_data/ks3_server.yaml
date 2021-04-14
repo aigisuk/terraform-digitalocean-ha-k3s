@@ -1,0 +1,47 @@
+#!/bin/bash
+
+apt-get -yq update
+apt-get install -yq \
+    ca-certificates \
+    curl \
+    ntp
+
+
+# k3s
+curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=${k3s_channel} K3S_TOKEN=${k3s_token} sh -s - \
+    --tls-san ${k3s_lb_ip} \
+    --flannel-backend=host-gw \
+    --disable local-storage \
+    --disable-cloud-controller \
+    --disable traefik \
+    --disable servicelb \
+    --kubelet-arg 'cloud-provider=external' \
+
+# additional manifests
+while ! test -d /var/lib/rancher/k3s/server/manifests; do
+    echo "Waiting for '/var/lib/rancher/k3s/server/manifests'"
+    sleep 1
+done
+
+# create digitalOcean API access token secret
+kubectl -n kube-system create secret generic digitalocean --from-literal=access-token=${do_token}
+
+# ccm
+cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/do-ccm.yaml
+${ccm_manifest}
+EOF
+
+# csi crds
+cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/crds.yaml
+${csi_crds_manifest}
+EOF
+
+# csi driver
+cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/driver.yaml
+${csi_driver_manifest}
+EOF
+
+# csi snapshot controller
+cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/snapshot-controller.yaml
+${csi_sc_manifest}
+EOF

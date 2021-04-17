@@ -43,6 +43,11 @@ spec:
             cpu: 100m
             memory: 50Mi
         env:
+          - name: DO_CLUSTER_VPC_ID
+            valueFrom:
+              configMapKeyRef:
+                name: digitalocean
+                key: do-cluster-vpc-id
           - name: DO_ACCESS_TOKEN
             valueFrom:
               secretKeyRef:

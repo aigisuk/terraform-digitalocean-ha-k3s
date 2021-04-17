@@ -11,8 +11,8 @@ A Terraform module to provision a high availability [K3s](https://k3s.io/) clust
 * [x] Managed Postgres database provisioned for use as the cluster external database (configurable version, size & node count)
 * [x] The number of Servers (Masters) and Agents (Workers) deployed is configurable
 * [x] Load Balanced Cluster API (HA)
-* [x] Cluster Flannel backend is configurable. Choose from `vxlan`, `host-gw`, `ipsec` (default) or `wireguard`
-* [x] DigitalOcean CCM ([Cloud Controller Manager](https://github.com/digitalocean/digitalocean-cloud-controller-manager)) and CSI ([Container Storage Interface](https://github.com/digitalocean/csi-digitalocean)) plugins are automatically installed. Allows the cluster to leverage load balancers and volumes on the DigitalOcean platform
+* [x] Flannel backend is configurable. Choose from `vxlan`, `host-gw`, `ipsec` (default) or `wireguard`
+* [x] DigitalOcean CCM ([Cloud Controller Manager](https://github.com/digitalocean/digitalocean-cloud-controller-manager)) and CSI ([Container Storage Interface](https://github.com/digitalocean/csi-digitalocean)) plugins are pre-installed. Allows the cluster to leverage DigitalOcean's load balancer and volume resources
 * [ ] Choice of ingress controllers to install (optional) [Kong, Nginx, Traefik v2]
 
 ## Compatibility
@@ -22,3 +22,16 @@ This module requires [Terraform](https://www.terraform.io/downloads.html) 0.13 o
 ## Tutorial
 
 TBC
+
+## Cost
+
+A default deployment comprises the following resources:
+
+| Quantity | Resource | Description | Price/mo ($USD)* | Total ($USD) |
+|------|-------------|:----:|:-----:|:-----:|
+| **2x** | Server(Master) Node | 1 VPCU, 2GB RAM, 2TB Transfer | 10 | **20** |
+| **2x** | Agent(Worker) Node | 1 VPCU, 2GB RAM, 2TB Transfer | 10 | **20** |
+| **1x** | Load Balancer | Small  | 10 | **10** |
+| **1x** | Postgres Database | Single Node DB | 15 | **15** |
+|  |  |  | **Total** | **65** |
+##### * Prices correct at time of latest commit (check [digitalocean.com](digitalocean.com) for current pricing)

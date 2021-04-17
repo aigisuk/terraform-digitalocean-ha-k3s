@@ -27,11 +27,11 @@ TBC
 
 A default deployment comprises the following resources:
 
-| Quantity | Resource | Description | Price/mo ($USD)* | Total/mo ($USD) |
-|------|-------------|:----:|:-----:|:-----:|
-| **2x** | Server (Master) Node | 1 VPCU, 2GB RAM, 2TB Transfer | 10 | **20** |
-| **2x** | Agent (Worker) Node | 1 VPCU, 2GB RAM, 2TB Transfer | 10 | **20** |
-| **1x** | Load Balancer | Small  | 10 | **10** |
-| **1x** | Postgres Database | Single Node DB | 15 | **15** |
-|  |  |  | **Total** | **65** |
-##### * Prices correct at time of latest commit (check [digitalocean.com](https://digitalocean.com) for current pricing)
+| Quantity | Resource | Description | Price/mo ($USD)* | Total/mo ($USD) | Total/hr ($USD) |
+|------|-------------|:----:|:-----:|:-----:|:-----:|
+| **2x** | Server (Master) Node | 1 VPCU, 2GB RAM, 2TB Transfer | 10 | **20** | **0.030** |
+| **2x** | Agent (Worker) Node | 1 VPCU, 2GB RAM, 2TB Transfer | 10 | **20** | **0.030** |
+| **1x** | Load Balancer | Small  | 10 | **10** | **0.01488** |
+| **1x** | Postgres DB Cluster | Single Basic Node | 15 | **15** | **0.022** |
+|  |  |  | **Total** | **65** | **0.09688** |
+##### * Prices correct at time of latest commit (check [digitalocean.com](https://www.digitalocean.com/pricing/) for current pricing)

@@ -8,7 +8,7 @@ A Terraform module to provision a high availability [K3s](https://k3s.io/) clust
 
 ## Features
 * [x] High Availability K3s Cluster provisioned on the DigitalOcean platform
-* [x] Managed PostgreSQL database provisioned to serve as the clusters external database (configurable options: version, size & node count)
+* [x] Managed PostgreSQL database provisioned. Serves as the clusters' external database (configurable options: version, size & node count)
 * [x] The number of provisioned Servers (Masters) and Agents (Workers) is configurable
 * [x] Cluster API/Servers are behind a provisioned load balancer for high availability
 * [x] Flannel backend is configurable. Choose from `vxlan`, `host-gw`, `ipsec` (default) or `wireguard`

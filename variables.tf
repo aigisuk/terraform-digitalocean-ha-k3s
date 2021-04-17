@@ -2,7 +2,7 @@ variable "do_token" {}
 
 variable "ssh_key_fingerprints" {
   type        = list(string)
-  description = "List of SSH Keys"
+  description = "List of SSH Key fingerprints"
 }
 
 variable "region" {
@@ -37,7 +37,7 @@ variable "database_size" {
 
 variable "database_node_count" {
   type        = number
-  description = "Number of nodes that comprise the cluster"
+  description = "Number of nodes that comprise the database cluster"
   default     = 1
 }
 
@@ -64,11 +64,11 @@ variable "agent_droplet_size" {
 
 variable "server_count" {
   type        = number
-  description = "Number of server nodes to be deployed"
-  default     = 1
+  description = "Number of server nodes to be provisioned"
+  default     = 2
 }
 variable "agent_count" {
   type        = number
-  description = "Number of agent nodes to be deployed"
-  default     = 1
+  description = "Number of agent nodes to be provisioned"
+  default     = 2
 }

@@ -7,18 +7,19 @@ A Terraform module to provision a high availability [K3s](https://k3s.io/) clust
 ###### *K3s Architecture with a High-availability Servers - [Source](https://rancher.com/docs/k3s/latest/en/architecture/#high-availability-k3s-server-with-an-external-db)*
 
 ## Features
-* [x] High Availability K3s Cluster provisioned on DigitalOcean platform
-* [x] Managed Postgres database provisioned for use as the cluster external database (configurable version, size & node count)
-* [x] The number of Servers (Masters) and Agents (Workers) deployed is configurable
-* [x] Load Balanced Cluster API (HA)
+* [x] High Availability K3s Cluster provisioned on the DigitalOcean platform
+* [x] Managed PostgreSQL database provisioned to serve as the clusters external database (configurable options: version, size & node count)
+* [x] The number of provisioned Servers (Masters) and Agents (Workers) is configurable
+* [x] Cluster API/Servers are behind a provisioned load balancer for high availability
 * [x] Flannel backend is configurable. Choose from `vxlan`, `host-gw`, `ipsec` (default) or `wireguard`
-* [x] DigitalOcean CCM ([Cloud Controller Manager](https://github.com/digitalocean/digitalocean-cloud-controller-manager)) and CSI ([Container Storage Interface](https://github.com/digitalocean/csi-digitalocean)) plugins are pre-installed. Allows the cluster to leverage DigitalOcean's load balancer and volume resources
-* [ ] Install an ingress controller from Kong, Nginx or Traefik v2 (optional)
-* [ ] Option to pre-install the Kubernetes Dashboard
+* [x] DigitalOcean's CCM ([Cloud Controller Manager](https://github.com/digitalocean/digitalocean-cloud-controller-manager)) and CSI ([Container Storage Interface](https://github.com/digitalocean/csi-digitalocean)) plugins are pre-installed. Enables the cluster to leverage DigitalOcean's load balancer and volume resources
+* [ ] Pre-install an ingress controller from Kong, Nginx or Traefik v2 (optional)
+* [ ] Pre-install the Kubernetes Dashboard (optional)
 
-## Compatibility
+## Compatibility/Requirements
 
-This module requires [Terraform](https://www.terraform.io/downloads.html) 0.13 or higher.
+* Requires [Terraform](https://www.terraform.io/downloads.html) 0.13 or higher.
+* A DigitalOcean account and personal access token to access the DigitalOcean API
 
 ## Tutorial
 

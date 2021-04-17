@@ -19,7 +19,7 @@ A Terraform module to provision a high availability [K3s](https://k3s.io/) clust
 ## Compatibility/Requirements
 
 * Requires [Terraform](https://www.terraform.io/downloads.html) 0.13 or higher.
-* A DigitalOcean account and personal access token to access the DigitalOcean API
+* A DigitalOcean account and personal access token to access the DigitalOcean API - [Use this referral link for $100 free credit](https://m.do.co/c/6b3bf6d79f7d)
 
 ## Tutorial
 

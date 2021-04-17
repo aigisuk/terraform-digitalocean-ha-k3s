@@ -4,4 +4,4 @@ A Terraform module to provision a high availability [K3s](https://k3s.io/) clust
 
 ![](https://res.cloudinary.com/qunux/image/upload/v1618679861/k3s-architecture-ha-server_vdrrpc.png)
 
-###### K3s Architecture with a High-availability Servers
+###### *K3s Architecture with a High-availability Servers - [Source](https://rancher.com/docs/k3s/latest/en/architecture/#high-availability-k3s-server-with-an-external-db)*

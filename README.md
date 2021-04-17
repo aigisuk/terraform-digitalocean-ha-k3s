@@ -33,6 +33,10 @@ A default deployment comprises the following resources:
 | **2x** | Agent (Worker) Node | 1 VPCU, 2GB RAM, 2TB Transfer | 10 | **20** | **0.030** |
 | **1x** | Load Balancer | Small  | 10 | **10** | **0.01488** |
 | **1x** | Postgres DB Cluster | Single Basic Node | 15 | **15** | **0.022** |
-|  |  |  | **Total** | **65** | **0.09688** |
+|  |  |  | **Total** | **65** | ≈ **0.097** |
 ##### * Prices correct at time of latest commit (check [digitalocean.com](https://www.digitalocean.com/pricing/) for current pricing)
 ##### **N.B.** Keep in mind, additional costs may be incurred through the provisioning of volumes and/or load balancers configured in any application deployment on the cluster.
+
+## Credits
+
+* [Set up Your K3s Cluster for High Availability on DigitalOcean](https://rancher.com/blog/2020/k3s-high-availability) - Blog post by [Alex Ellis](https://github.com/alexellis) on rancher.com

@@ -1,0 +1,23 @@
+name: 'Terraform'
+
+on:
+  pull_request:
+
+jobs:
+  terraform:
+    name: 'Terraform Format'
+    runs-on: ubuntu-20.04
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform Format
+      run: terraform fmt -check

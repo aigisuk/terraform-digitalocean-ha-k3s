@@ -5,3 +5,4 @@ terraform.tfvars
 terraform.txt
 .auto.tfvars
 creds/
+.vscode/

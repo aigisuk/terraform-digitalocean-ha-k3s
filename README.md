@@ -13,7 +13,7 @@ A Terraform module to provision a high availability [K3s](https://k3s.io/) clust
 * [x] Load Balanced Cluster API (HA)
 * [x] Flannel backend is configurable. Choose from `vxlan`, `host-gw`, `ipsec` (default) or `wireguard`
 * [x] DigitalOcean CCM ([Cloud Controller Manager](https://github.com/digitalocean/digitalocean-cloud-controller-manager)) and CSI ([Container Storage Interface](https://github.com/digitalocean/csi-digitalocean)) plugins are pre-installed. Allows the cluster to leverage DigitalOcean's load balancer and volume resources
-* [ ] Choice of ingress controllers to install (optional) [Kong, Nginx, Traefik v2]
+* [ ] Choice of ingress controllers [Kong, Nginx, Traefik v2] to install (optional)
 
 ## Compatibility
 
@@ -35,3 +35,4 @@ A default deployment comprises the following resources:
 | **1x** | Postgres DB Cluster | Single Basic Node | 15 | **15** | **0.022** |
 |  |  |  | **Total** | **65** | **0.09688** |
 ##### * Prices correct at time of latest commit (check [digitalocean.com](https://www.digitalocean.com/pricing/) for current pricing)
+##### **N.B.** Don't forget additional costs may be incurred through the provisioning of volumes and load balancers configured in any application deployment on the cluster.

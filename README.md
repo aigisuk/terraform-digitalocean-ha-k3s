@@ -35,4 +35,4 @@ A default deployment comprises the following resources:
 | **1x** | Postgres DB Cluster | Single Basic Node | 15 | **15** | **0.022** |
 |  |  |  | **Total** | **65** | **0.09688** |
 ##### * Prices correct at time of latest commit (check [digitalocean.com](https://www.digitalocean.com/pricing/) for current pricing)
-##### **N.B.** Don't forget additional costs may be incurred through the provisioning of volumes and load balancers configured in any application deployment on the cluster.
+##### **N.B.** Keep in mind, additional costs may be incurred through the provisioning of volumes and/or load balancers configured in any application deployment on the cluster.

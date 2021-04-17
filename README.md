@@ -13,7 +13,7 @@ A Terraform module to provision a high availability [K3s](https://k3s.io/) clust
 * [x] Load Balanced Cluster API (HA)
 * [x] Flannel backend is configurable. Choose from `vxlan`, `host-gw`, `ipsec` (default) or `wireguard`
 * [x] DigitalOcean CCM ([Cloud Controller Manager](https://github.com/digitalocean/digitalocean-cloud-controller-manager)) and CSI ([Container Storage Interface](https://github.com/digitalocean/csi-digitalocean)) plugins are pre-installed. Allows the cluster to leverage DigitalOcean's load balancer and volume resources
-* [ ] Choice of ingress controllers [Kong, Nginx, Traefik v2] to install (optional)
+* [ ] Install an ingress controller from Kong, Nginx or Traefik v2 (optional)
 
 ## Compatibility
 

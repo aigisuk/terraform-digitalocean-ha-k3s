@@ -1,5 +1,10 @@
 variable "do_token" {}
 
+variable "ssh_key_fingerprints" {
+  type        = list(string)
+  description = "List of SSH Keys"
+}
+
 variable "region" {
   type        = string
   description = "Cluster region"
@@ -7,18 +12,20 @@ variable "region" {
 }
 
 variable "k3s_channel" {
-  default = "stable"
+  type        = string
+  description = "K3s release channel. stable, latest, testing or a specific channel e.g. v1.20"
+  default     = "stable"
 }
 
 variable "database_user" {
   type        = string
-  description = "DB User"
-  default     = "k3s_db_user"
+  description = "Database User"
+  default     = "k3s_default_user"
 }
 
 variable "database_version" {
   type        = string
-  description = "Engine version used by the cluster (ex. 13 for PostgreSQL 13)"
+  description = "Database engine version used by the cluster (ex. 13 for PostgreSQL 13)"
   default     = "13"
 }
 
@@ -30,7 +37,7 @@ variable "database_size" {
 
 variable "database_node_count" {
   type        = number
-  description = "Number of nodes that will be included in the cluster"
+  description = "Number of nodes that comprise the cluster"
   default     = 1
 }
 
@@ -44,36 +51,24 @@ variable "flannel_backend" {
   }
 }
 
-variable "ssh_key_fingerprints" {
-  type        = list(string)
-  description = "List of SSH Keys"
+variable "server_droplet_size" {
+  type        = string
+  description = "Server droplet size"
+  default     = "s-1vcpu-2gb" # prod = s-1vcpu-2gb
 }
-
-variable "server_droplet" {
-  type        = map(any)
-  description = "Server Droplet configuration map"
-  default = {
-    image = "ubuntu-20-04-x64"
-    size  = "s-1vcpu-2gb" # prod = s-1vcpu-2gb
-  }
-}
-
-variable "agent_droplet" {
-  type        = map(any)
-  description = "Agent Droplet configuration map"
-  default = {
-    image = "ubuntu-20-04-x64"
-    size  = "s-1vcpu-2gb" # prod = s-2vcpu-4gb
-  }
+variable "agent_droplet_size" {
+  type        = string
+  description = "Agent droplet size"
+  default     = "s-1vcpu-2gb" # prod = s-2vcpu-4gb
 }
 
 variable "server_count" {
   type        = number
   description = "Number of server nodes to be deployed"
-  default     = 2
+  default     = 1
 }
 variable "agent_count" {
   type        = number
   description = "Number of agent nodes to be deployed"
-  default     = 2
+  default     = 1
 }

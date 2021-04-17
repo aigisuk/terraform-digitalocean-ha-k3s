@@ -1,10 +1,10 @@
 resource "digitalocean_droplet" "k3s_server_init" {
   name = "k3s-${var.region}-server-1"
 
-  image              = var.server_droplet.image
+  image              = "ubuntu-20-04-x64"
   tags               = ["k3s_server"]
   region             = var.region
-  size               = var.server_droplet.size
+  size               = var.server_droplet_size
   monitoring         = true
   private_networking = true
   vpc_uuid           = digitalocean_vpc.k3s_vpc.id

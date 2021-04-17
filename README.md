@@ -27,11 +27,11 @@ TBC
 
 A default deployment comprises the following resources:
 
-| Quantity | Resource | Description | Price/mo ($USD)* | Total ($USD) |
+| Quantity | Resource | Description | Price/mo ($USD)* | Total/mo ($USD) |
 |------|-------------|:----:|:-----:|:-----:|
-| **2x** | Server(Master) Node | 1 VPCU, 2GB RAM, 2TB Transfer | 10 | **20** |
-| **2x** | Agent(Worker) Node | 1 VPCU, 2GB RAM, 2TB Transfer | 10 | **20** |
+| **2x** | Server (Master) Node | 1 VPCU, 2GB RAM, 2TB Transfer | 10 | **20** |
+| **2x** | Agent (Worker) Node | 1 VPCU, 2GB RAM, 2TB Transfer | 10 | **20** |
 | **1x** | Load Balancer | Small  | 10 | **10** |
 | **1x** | Postgres Database | Single Node DB | 15 | **15** |
 |  |  |  | **Total** | **65** |
-##### * Prices correct at time of latest commit (check [digitalocean.com](digitalocean.com) for current pricing)
+##### * Prices correct at time of latest commit (check [digitalocean.com](https://digitalocean.com) for current pricing)

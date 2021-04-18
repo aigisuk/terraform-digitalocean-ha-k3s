@@ -12,7 +12,7 @@ resource "digitalocean_droplet" "k3s_agent" {
   ssh_keys           = var.ssh_key_fingerprints
   user_data = templatefile("${path.module}/user_data/k3s_agent.yaml", {
     k3s_channel = var.k3s_channel
-    k3s_token   = random_string.k3s_token.result
+    k3s_token   = random_password.k3s_token.result
     k3s_lb_ip   = digitalocean_loadbalancer.k3s_lb.ip
   })
 }

@@ -3,10 +3,6 @@ A Terraform module to provision a high availability [K3s](https://k3s.io/) clust
 
 ![Terraform, DigitalOcean, K3s illustration](https://res.cloudinary.com/qunux/image/upload/v1618680649/terraform-digitalocean-k3s-repo-logo_wb-01_ar5ds4.svg)
 
-<img src="https://res.cloudinary.com/qunux/image/upload/v1618680903/k3s-architecture-ha-server_border_rjwhll.png"/>
-
-###### *K3s Architecture with a High-availability Servers - [Source](https://rancher.com/docs/k3s/latest/en/architecture/#high-availability-k3s-server-with-an-external-db)*
-
 ## Features
 * [x] High Availability K3s Cluster provisioned on the DigitalOcean platform
 * [x] Managed PostgreSQL database provisioned. Serves as the cluster's external database (configurable options: database version, size & node count)
@@ -25,6 +21,14 @@ A Terraform module to provision a high availability [K3s](https://k3s.io/) clust
 ## Tutorial
 
 TBC
+
+## Architecture
+
+A default deployment of this module provisions the architecture illustrated below on the DigitalOcean cloud platform (minus the Load Balancer for external traffic).
+
+![](https://res.cloudinary.com/qunux/image/upload/v1618680903/k3s-architecture-ha-server_border_rjwhll.png)
+
+###### *K3s Architecture with a High-availability Servers - [Source](https://rancher.com/docs/k3s/latest/en/architecture/#high-availability-k3s-server-with-an-external-db)*
 
 ## Cost
 

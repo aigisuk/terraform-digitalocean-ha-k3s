@@ -12,6 +12,8 @@ A Terraform module to provision a high availability [K3s](https://k3s.io/) clust
 * [x] DigitalOcean's CCM ([Cloud Controller Manager](https://github.com/digitalocean/digitalocean-cloud-controller-manager)) and CSI ([Container Storage Interface](https://github.com/digitalocean/csi-digitalocean)) plugins are pre-installed. Enables the cluster to leverage DigitalOcean's load balancer and volume resources
 * [ ] Pre-install an ingress controller from Kong, Nginx or Traefik v2 (optional)
 * [ ] Pre-install the Kubernetes Dashboard (optional)
++ [ ] Generate custom `kubeconfig` file
+* [ ] Cluster database engine is configurable. Choose from PostgreSQL or MySQL
 
 ## Compatibility/Requirements
 

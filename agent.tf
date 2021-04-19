@@ -5,7 +5,7 @@ resource "digitalocean_droplet" "k3s_agent" {
   image              = "ubuntu-20-04-x64"
   tags               = ["k3s_agent"]
   region             = var.region
-  size               = var.agent_droplet_size
+  size               = var.agent_size
   monitoring         = true
   private_networking = true
   vpc_uuid           = digitalocean_vpc.k3s_vpc.id

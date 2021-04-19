@@ -1,29 +1,37 @@
 # Terraform DigitalOcean HA K3S Module
-![Terraform, DigitalOcean, K3s illustration](https://res.cloudinary.com/qunux/image/upload/v1618680649/terraform-digitalocean-k3s-repo-logo_wb-01_ar5ds4.svg)
 A Terraform module to provision a high availability [K3s](https://k3s.io/) cluster with external database on the DigitalOcean cloud platform.
 
-![](https://res.cloudinary.com/qunux/image/upload/v1618680903/k3s-architecture-ha-server_border_rjwhll.png)
-
-###### *K3s Architecture with a High-availability Servers - [Source](https://rancher.com/docs/k3s/latest/en/architecture/#high-availability-k3s-server-with-an-external-db)*
+![Terraform, DigitalOcean, K3s illustration](https://res.cloudinary.com/qunux/image/upload/v1618680649/terraform-digitalocean-k3s-repo-logo_wb-01_ar5ds4.svg)
 
 ## Features
 * [x] High Availability K3s Cluster provisioned on the DigitalOcean platform
-* [x] Managed PostgreSQL database provisioned. Serves as the cluster's external database (configurable options: database version, size & node count)
+* [x] Managed PostgreSQL database provisioned. Serves as the datastore for the cluster's state (configurable options: database version, size & node count)
 * [x] The number of provisioned Servers (Masters) and Agents (Workers) is configurable
 * [x] Cluster API/Servers are behind a provisioned load balancer for high availability
 * [x] Flannel backend is configurable. Choose from `vxlan`, `host-gw`, `ipsec` (default) or `wireguard`
 * [x] DigitalOcean's CCM ([Cloud Controller Manager](https://github.com/digitalocean/digitalocean-cloud-controller-manager)) and CSI ([Container Storage Interface](https://github.com/digitalocean/csi-digitalocean)) plugins are pre-installed. Enables the cluster to leverage DigitalOcean's load balancer and volume resources
+* [x] Option to make Servers (Masters) schedulable. Default is `false` i.e. `CriticalAddonsOnly=true:NoExecute`
 * [ ] Pre-install an ingress controller from Kong, Nginx or Traefik v2 (optional)
 * [ ] Pre-install the Kubernetes Dashboard (optional)
+* [ ] Generate custom `kubeconfig` file (optional)
+* [ ] Cluster database engine is configurable. Choose from PostgreSQL or MySQL
 
 ## Compatibility/Requirements
 
 * Requires [Terraform](https://www.terraform.io/downloads.html) 0.13 or higher.
-* A DigitalOcean account and personal access token to access the DigitalOcean API - [Use this referral link for $100 free credit](https://m.do.co/c/6b3bf6d79f7d)
+* A DigitalOcean account and [personal access token](https://docs.digitalocean.com/reference/api/create-personal-access-token/) for accessing the DigitalOcean API - [Use this referral link for $100 free credit](https://m.do.co/c/6b3bf6d79f7d)
 
 ## Tutorial
 
 TBC
+
+## Architecture
+
+A default deployment of this module provisions the architecture illustrated below on the DigitalOcean cloud platform (minus the Load Balancer for external traffic).
+
+![](https://res.cloudinary.com/qunux/image/upload/v1618680903/k3s-architecture-ha-server_border_rjwhll.png)
+
+###### *K3s Architecture with a High-availability Servers - [Source](https://rancher.com/docs/k3s/latest/en/architecture/#high-availability-k3s-server-with-an-external-db)*
 
 ## Cost
 

@@ -1,6 +1,6 @@
 resource "digitalocean_droplet" "k3s_agent" {
   count = var.agent_count
-  name  = "k3s-agent-${var.region}-${count.index + 1}"
+  name  = "k3s-agent-${var.region}-${random_id.agent_node_id[count.index].hex}-${count.index + 1}"
 
   image              = "ubuntu-20-04-x64"
   tags               = ["k3s_agent"]

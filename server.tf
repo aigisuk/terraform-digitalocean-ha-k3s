@@ -1,6 +1,6 @@
 resource "digitalocean_droplet" "k3s_server" {
   count = var.server_count - 1
-  name  = "k3s-server-${var.region}-${count.index + 2}"
+  name  = "k3s-server-${var.region}-${random_id.server_node_id[count.index + 1].hex}-${count.index + 2}"
 
   image              = "ubuntu-20-04-x64"
   tags               = ["k3s_server"]

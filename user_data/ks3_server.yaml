@@ -11,10 +11,9 @@ apt-get install -yq \
 DROPLET_ID=$(curl -s http://169.254.169.254/metadata/v1/id)
 
 # k3s
-curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=${k3s_channel} K3S_TOKEN=${k3s_token} sh -s - server \
+curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=${k3s_channel} K3S_TOKEN=${k3s_token} sh -s - server ${critical_taint} \
     --datastore-endpoint="postgres://${db_user}:${db_pass}@${db_host}:${db_port}/${db_name}" \
     --kubelet-arg "provider-id=digitalocean://$DROPLET_ID" \
-    ${critical_taint}
     --flannel-backend=${flannel_backend} \
     --flannel-iface=eth1 \
     --disable local-storage \

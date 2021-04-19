@@ -21,7 +21,7 @@ resource "digitalocean_droplet" "k3s_server_init" {
     db_user             = var.database_user
     db_pass             = digitalocean_database_user.dbuser.password
     db_name             = digitalocean_database_cluster.postgres.database
-    critical_taint      = var.server_taint_criticalonly == true ? "--node-taint \"CriticalAddonsOnly=true:NoExecute\" \\" : ""
+    critical_taint      = local.taint_critical
     ccm_manifest        = file("${path.module}/manifests/do-ccm.yaml")
     csi_crds_manifest   = file("${path.module}/manifests/do-csi/crds.yaml")
     csi_driver_manifest = file("${path.module}/manifests/do-csi/driver.yaml")

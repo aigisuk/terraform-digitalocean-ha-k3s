@@ -1,4 +1,7 @@
-variable "do_token" {}
+variable "do_token" {
+  type = string
+  description = "DigitalOcean Personal Access Token"
+}
 
 variable "ssh_key_fingerprints" {
   type        = list(string)
@@ -7,19 +10,19 @@ variable "ssh_key_fingerprints" {
 
 variable "region" {
   type        = string
-  description = "Cluster region"
+  description = "Region where cluster is deployed"
   default     = "fra1"
 }
 
 variable "k3s_channel" {
   type        = string
-  description = "K3s release channel. stable, latest, testing or a specific channel e.g. v1.20"
+  description = "K3s release channel. 'stable', 'latest', 'testing' or a specific channel e.g. 'v1.20'"
   default     = "stable"
 }
 
 variable "database_user" {
   type        = string
-  description = "Database User"
+  description = "Database Username"
   default     = "k3s_default_user"
 }
 
@@ -43,7 +46,7 @@ variable "database_node_count" {
 
 variable "flannel_backend" {
   type        = string
-  description = "Flannel Backend Type"
+  description = "Flannel Backend Type. Valid options include vxlan, host-gw, ipsec (default) or wireguard"
   default     = "ipsec"
   validation {
     condition     = length(regexall("^ipsec|vxlan|host-gw|wireguard$", var.flannel_backend)) > 0
@@ -53,23 +56,23 @@ variable "flannel_backend" {
 
 variable "server_size" {
   type        = string
-  description = "Server droplet size"
+  description = "Server droplet size. e.g. s-1vcpu-2gb"
   default     = "s-1vcpu-2gb" # prod = s-1vcpu-2gb
 }
 variable "agent_size" {
   type        = string
-  description = "Agent droplet size"
+  description = "Agent droplet size. e.g. s-1vcpu-2gb"
   default     = "s-1vcpu-2gb" # prod = s-2vcpu-4gb
 }
 
 variable "server_count" {
   type        = number
-  description = "Number of server nodes to be provisioned"
+  description = "Number of server (master) nodes to be provisioned"
   default     = 2
 }
 variable "agent_count" {
   type        = number
-  description = "Number of agent nodes to be provisioned"
+  description = "Number of agent (worker) nodes to be provisioned"
   default     = 2
 }
 

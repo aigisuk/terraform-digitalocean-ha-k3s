@@ -1,5 +1,5 @@
 resource "digitalocean_droplet" "k3s_server_init" {
-  name = "k3s-${var.region}-server-1"
+  name = "k3s-server-${var.region}-1"
 
   image              = "ubuntu-20-04-x64"
   tags               = ["k3s_server"]

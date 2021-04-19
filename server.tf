@@ -5,7 +5,7 @@ resource "digitalocean_droplet" "k3s_server" {
   image              = "ubuntu-20-04-x64"
   tags               = ["k3s_server"]
   region             = var.region
-  size               = var.server_droplet_size
+  size               = var.server_size
   monitoring         = true
   private_networking = true
   vpc_uuid           = digitalocean_vpc.k3s_vpc.id
@@ -20,6 +20,7 @@ resource "digitalocean_droplet" "k3s_server" {
     db_user         = var.database_user
     db_pass         = digitalocean_database_user.dbuser.password
     db_name         = digitalocean_database_cluster.postgres.database
+    critical_taint  = var.server_taint_criticalonly == true ? "--node-taint \"CriticalAddonsOnly=true:NoExecute\" \\" : ""
   })
   depends_on = [
     digitalocean_droplet.k3s_server_init

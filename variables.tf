@@ -51,12 +51,12 @@ variable "flannel_backend" {
   }
 }
 
-variable "server_droplet_size" {
+variable "server_size" {
   type        = string
   description = "Server droplet size"
   default     = "s-1vcpu-2gb" # prod = s-1vcpu-2gb
 }
-variable "agent_droplet_size" {
+variable "agent_size" {
   type        = string
   description = "Agent droplet size"
   default     = "s-1vcpu-2gb" # prod = s-2vcpu-4gb
@@ -71,4 +71,10 @@ variable "agent_count" {
   type        = number
   description = "Number of agent nodes to be provisioned"
   default     = 2
+}
+
+variable "server_taint_criticalonly" {
+  type        = bool
+  description = "Allow only critical addons to be scheduled on servers? (thus preventing workloads from being launched on them)"
+  default     = true
 }

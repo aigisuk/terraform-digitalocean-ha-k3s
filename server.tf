@@ -1,6 +1,6 @@
 resource "digitalocean_droplet" "k3s_server" {
   count = var.server_count - 1
-  name  = "k3s-${var.region}-server-${count.index + 2}"
+  name  = "k3s-server-${var.region}-${count.index + 2}"
 
   image              = "ubuntu-20-04-x64"
   tags               = ["k3s_server"]
@@ -20,7 +20,7 @@ resource "digitalocean_droplet" "k3s_server" {
     db_user         = var.database_user
     db_pass         = digitalocean_database_user.dbuser.password
     db_name         = digitalocean_database_cluster.postgres.database
-    critical_taint  = var.server_taint_criticalonly == true ? "--node-taint \"CriticalAddonsOnly=true:NoExecute\" \\" : ""
+    critical_taint  = local.taint_critical
   })
   depends_on = [
     digitalocean_droplet.k3s_server_init

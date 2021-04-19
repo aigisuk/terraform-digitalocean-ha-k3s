@@ -1,3 +1,3 @@
 locals {
-    taint_critical = var.server_taint_criticalonly == true ? "--node-taint \"CriticalAddonsOnly=true:NoExecute\" \\" : ""
+    taint_critical = var.server_taint_criticalonly == true ? "--node-taint \"CriticalAddonsOnly=true:NoExecute\" \\" : "\\"
 }

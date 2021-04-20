@@ -11,10 +11,10 @@ A Terraform module to provision a high availability [K3s](https://k3s.io/) clust
 * [x] Flannel backend is configurable. Choose from `vxlan`, `host-gw`, `ipsec` (default) or `wireguard`
 * [x] DigitalOcean's CCM ([Cloud Controller Manager](https://github.com/digitalocean/digitalocean-cloud-controller-manager)) and CSI ([Container Storage Interface](https://github.com/digitalocean/csi-digitalocean)) plugins are pre-installed. Enables the cluster to leverage DigitalOcean's load balancer and volume resources
 * [x] Option to make Servers (Masters) schedulable. Default is `false` i.e. `CriticalAddonsOnly=true:NoExecute`
+* [x] Cluster database engine is configurable. Choose from PostgreSQL (v13) or MySQL (v8)
 * [ ] Pre-install an ingress controller from Kong, Nginx or Traefik v2 (optional)
 * [ ] Pre-install the Kubernetes Dashboard (optional)
 * [ ] Generate custom `kubeconfig` file (optional)
-* [ ] Cluster database engine is configurable. Choose from PostgreSQL or MySQL
 
 ## Compatibility/Requirements
 

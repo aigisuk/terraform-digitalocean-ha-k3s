@@ -15,11 +15,7 @@ resource "digitalocean_droplet" "k3s_server" {
     k3s_token       = random_password.k3s_token.result
     flannel_backend = var.flannel_backend
     k3s_lb_ip       = digitalocean_loadbalancer.k3s_lb.ip
-    db_host         = digitalocean_database_cluster.postgres.host
-    db_port         = digitalocean_database_cluster.postgres.port
-    db_user         = var.database_user
-    db_pass         = digitalocean_database_user.dbuser.password
-    db_name         = digitalocean_database_cluster.postgres.database
+    db_cluster_uri  = local.db_cluster_uri
     critical_taint  = local.taint_critical
   })
   depends_on = [

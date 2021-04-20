@@ -26,10 +26,14 @@ variable "database_user" {
   default     = "k3s_default_user"
 }
 
-variable "database_version" {
+variable "database_engine" {
   type        = string
-  description = "Database engine version used by the cluster (ex. 13 for PostgreSQL 13)"
-  default     = "13"
+  description = "Database engine. PostgreSQL (13) or MySQL (8)"
+  default     = "postgres"
+  validation {
+    condition     = length(regexall("^postgres|mysql$", var.database_engine)) > 0
+    error_message = "Invalid database engine. Valid types are postgres or mysql."
+  }
 }
 
 variable "database_size" {

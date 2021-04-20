@@ -1,3 +1,16 @@
 locals {
-  taint_critical = var.server_taint_criticalonly == true ? "--node-taint \"CriticalAddonsOnly=true:NoExecute\" \\" : "\\"
+  db_host = digitalocean_database_cluster.k3s.host
+  db_port = digitalocean_database_cluster.k3s.port
+  db_user = var.database_user
+  db_pass = digitalocean_database_user.dbuser.password
+  db_name = digitalocean_database_cluster.k3s.database
+
+  postgres_uri = "postgres://${local.db_user}:${local.db_pass}@${local.db_host}:${local.db_port}/${local.db_name}"
+  mysql_uri    = "mysql://${local.db_user}:${local.db_pass}@tcp(${local.db_host}:${local.db_port})/${local.db_name}"
+
+  db_cluster_uri = var.database_engine == "postgres" ? local.postgres_uri : local.mysql_uri
+
+  critical_addons_only_true = "--node-taint \"CriticalAddonsOnly=true:NoExecute\" \\"
+
+  taint_critical = var.server_taint_criticalonly == true ? local.critical_addons_only_true : "\\"
 }

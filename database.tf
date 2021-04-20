@@ -1,13 +1,13 @@
 resource "digitalocean_database_user" "dbuser" {
-  cluster_id = digitalocean_database_cluster.postgres.id
+  cluster_id = digitalocean_database_cluster.k3s.id
   name       = var.database_user
 }
 
 
-resource "digitalocean_database_cluster" "postgres" {
+resource "digitalocean_database_cluster" "k3s" {
   name                 = "k3s-ext-datastore"
-  engine               = "pg"
-  version              = var.database_version
+  engine               = var.database_engine == "postgres" ? "pg" : "mysql"
+  version              = var.database_engine == "postgres" ? "13" : "8"
   size                 = var.database_size
   region               = var.region
   private_network_uuid = digitalocean_vpc.k3s_vpc.id
@@ -17,6 +17,6 @@ resource "digitalocean_database_cluster" "postgres" {
 resource "digitalocean_project_resources" "k3s_ext_datastore" {
   project = digitalocean_project.k3s_cluster.id
   resources = [
-    digitalocean_database_cluster.postgres.urn
+    digitalocean_database_cluster.k3s.urn
   ]
 }

@@ -1,5 +1,6 @@
 resource "digitalocean_droplet" "k3s_server_init" {
-  name = "k3s-server-${var.region}-1"
+  count = 1
+  name  = "k3s-server-${var.region}-${random_id.server_node_id[count.index].hex}-1"
 
   image              = "ubuntu-20-04-x64"
   tags               = ["k3s_server"]
@@ -16,11 +17,7 @@ resource "digitalocean_droplet" "k3s_server_init" {
     do_cluster_vpc_id   = digitalocean_vpc.k3s_vpc.id
     flannel_backend     = var.flannel_backend
     k3s_lb_ip           = digitalocean_loadbalancer.k3s_lb.ip
-    db_host             = digitalocean_database_cluster.postgres.host
-    db_port             = digitalocean_database_cluster.postgres.port
-    db_user             = var.database_user
-    db_pass             = digitalocean_database_user.dbuser.password
-    db_name             = digitalocean_database_cluster.postgres.database
+    db_cluster_uri      = local.db_cluster_uri
     critical_taint      = local.taint_critical
     ccm_manifest        = file("${path.module}/manifests/do-ccm.yaml")
     csi_crds_manifest   = file("${path.module}/manifests/do-csi/crds.yaml")
@@ -30,8 +27,9 @@ resource "digitalocean_droplet" "k3s_server_init" {
 }
 
 resource "digitalocean_project_resources" "k3s_init_server_node" {
+  count   = 1
   project = digitalocean_project.k3s_cluster.id
   resources = [
-    digitalocean_droplet.k3s_server_init.urn,
+    digitalocean_droplet.k3s_server_init[count.index].urn,
   ]
 }

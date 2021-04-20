@@ -10,7 +10,7 @@ resource "digitalocean_droplet" "k3s_server" {
   private_networking = true
   vpc_uuid           = digitalocean_vpc.k3s_vpc.id
   ssh_keys           = var.ssh_key_fingerprints
-  user_data = templatefile("${path.module}/user_data/ks3_server.yaml", {
+  user_data = templatefile("${path.module}/user_data/ks3_server.sh", {
     k3s_channel     = var.k3s_channel
     k3s_token       = random_password.k3s_token.result
     flannel_backend = var.flannel_backend

@@ -27,7 +27,7 @@ TBC
 
 ## Architecture
 
-A default deployment of this module provisions the architecture illustrated below on the DigitalOcean cloud platform (minus the Load Balancer for external traffic).
+A default deployment of this module provisions the architecture illustrated below on the DigitalOcean cloud platform (minus the external traffic Load Balancer).
 
 ![](https://res.cloudinary.com/qunux/image/upload/v1618680903/k3s-architecture-ha-server_border_rjwhll.png)
 

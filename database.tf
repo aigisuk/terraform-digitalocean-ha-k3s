@@ -7,7 +7,7 @@ resource "digitalocean_database_user" "dbuser" {
 resource "digitalocean_database_cluster" "k3s" {
   name                 = "k3s-ext-datastore"
   engine               = var.database_engine == "postgres" ? "pg" : "mysql"
-  version              = var.database_engine == "postgres" ? "13" : "8"
+  version              = var.database_engine == "postgres" ? "11" : "8"
   size                 = var.database_size
   region               = var.region
   private_network_uuid = digitalocean_vpc.k3s_vpc.id

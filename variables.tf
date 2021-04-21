@@ -10,7 +10,7 @@ variable "ssh_key_fingerprints" {
 
 variable "region" {
   type        = string
-  description = "Region where cluster is deployed"
+  description = "Region in which to deploy the cluster"
   default     = "fra1"
 }
 
@@ -71,13 +71,13 @@ variable "agent_size" {
 
 variable "server_count" {
   type        = number
-  description = "Number of server (master) nodes to be provisioned"
+  description = "Number of server (master) nodes to provision"
   default     = 2
 }
 variable "agent_count" {
   type        = number
-  description = "Number of agent (worker) nodes to be provisioned"
-  default     = 2
+  description = "Number of agent (worker) nodes to provision"
+  default     = 1
 }
 
 variable "server_taint_criticalonly" {

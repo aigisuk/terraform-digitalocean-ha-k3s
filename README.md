@@ -27,7 +27,7 @@ TBC
 
 ## Architecture
 
-A default deployment of this module provisions an architecture similar to that illustrated below (minus the external traffic Load Balancer). 2x Servers, 1x Agent and a load balancer in front of the servers providing a fixed registration address for the Kubernetes API.
+A default deployment of this module provisions an architecture similar to that illustrated below (minus the external traffic Load Balancer). **2x** Servers, **1x** Agent and a load balancer in front of the servers providing a fixed registration address for the Kubernetes API. Additional Servers or Agents can be provisioned via the `server_count` and `agent_count` variables respectively.
 
 ![](https://res.cloudinary.com/qunux/image/upload/v1618680903/k3s-architecture-ha-server_border_rjwhll.png)
 
@@ -44,24 +44,24 @@ module "do-ha-k3s" {
 }
 ```
 
-A Functional example is included in the
+Functional examples are included in the
 [examples](./examples/) directory.
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| do_token | DigitalOcean Personal Access Token | string | `N/A` | yes |
-| ssh_key_fingerprints | List of SSH Key fingerprints | list(string) | `N/A` | yes |
+| do_token | DigitalOcean Personal Access Token | string | N/A | yes |
+| ssh_key_fingerprints | List of SSH Key fingerprints | list(string) | N/A | yes |
 | region | Region in which to deploy cluster | string | `fra1` | no |
 | k3s_channel | K3s release channel. `stable`, `latest`, `testing` or a specific channel or version e.g. `v1.20`, `v1.19.8+k3s1` | string | `"stable"` | no |
 | database_user | Database username | string | `"k3s_default_user"` | no |
 | database_engine | Database engine. PostgreSQL (13) or MySQL (8) | string | `"postgres"` | no |
-| database_size | Database Droplet size associated with the cluster (ex. db-s-1vcpu-1gb) | string |`"db-s-1vcpu-1gb"` | no |
+| database_size | Database Droplet size associated with the cluster e.g. `db-s-1vcpu-1gb` | string |`"db-s-1vcpu-1gb"` | no |
 | database_node_count | Number of nodes that comprise the database cluster | number | `1`| no |
 | flannel_backend | Flannel Backend Type. Valid options include `vxlan`, `host-gw`, `ipsec` (default) or `wireguard` | string | `ipsec`| no |
-| server_size | Server droplet size. e.g. s-1vcpu-2gb | string | `s-1vcpu-2gb`| no |
-| agent_size | Agent droplet size. e.g. s-1vcpu-2gb | string | `s-1vcpu-2gb`| no |
+| server_size | Server droplet size. e.g. `s-1vcpu-2gb` | string | `s-1vcpu-2gb`| no |
+| agent_size | Agent droplet size. e.g. `s-1vcpu-2gb` | string | `s-1vcpu-2gb`| no |
 | server_count | Number of server (master) nodes to provision | number | `2`| no |
 | agent_count | Number of agent (worker) nodes to provision | number | `1`| no |
 | server_taint_criticalonly | Allow only critical addons to be scheduled on servers? (thus preventing workloads from being launched on them) | bool | `true`| no |

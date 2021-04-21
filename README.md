@@ -1,18 +1,18 @@
 # Terraform DigitalOcean HA K3S Module
 A Terraform module to provision a high availability [K3s](https://k3s.io/) cluster with external database on the DigitalOcean cloud platform.
 
-![Terraform, DigitalOcean, K3s illustration](https://res.cloudinary.com/qunux/image/upload/v1618680649/terraform-digitalocean-k3s-repo-logo_wb-01_ar5ds4.svg)
+![Terraform, DigitalOcean, K3s illustration](https://res.cloudinary.com/qunux/image/upload/v1618967113/terraform-digitalocean-k3s-repo-logo_f2zyoz.svg)
 
 ## Features
 * [x] High Availability K3s Cluster provisioned on the DigitalOcean platform
-* [x] Managed PostgreSQL database provisioned. Serves as the datastore for the cluster's state (configurable options: database version, size & node count)
+* [x] Managed **PostgreSQL**/**MySQL** database provisioned. Serves as the datastore for the cluster's state (configurable options: size & node count)
 * [x] The number of provisioned Servers (Masters) and Agents (Workers) is configurable
 * [x] Cluster API/Servers are behind a provisioned load balancer for high availability
 * [x] Flannel backend is configurable. Choose from `vxlan`, `host-gw`, `ipsec` (default) or `wireguard`
 * [x] DigitalOcean's CCM ([Cloud Controller Manager](https://github.com/digitalocean/digitalocean-cloud-controller-manager)) and CSI ([Container Storage Interface](https://github.com/digitalocean/csi-digitalocean)) plugins are pre-installed. Enables the cluster to leverage DigitalOcean's load balancer and volume resources
 * [x] Option to make Servers (Masters) schedulable. Default is `false` i.e. `CriticalAddonsOnly=true:NoExecute`
-* [x] Cluster database engine is configurable. Choose from PostgreSQL (v13) or MySQL (v8)
-* [ ] Pre-install an ingress controller from Kong, Nginx or Traefik v2 (optional)
+* [x] Cluster database engine is configurable. Choose from **PostgreSQL** (v11) or **MySQL** (v8)
+* [ ] Pre-install an ingress controller from **Kong**, **Nginx** or **Traefik v2** (optional)
 * [ ] Pre-install the Kubernetes Dashboard (optional)
 * [ ] Generate custom `kubeconfig` file (optional)
 
@@ -27,25 +27,62 @@ TBC
 
 ## Architecture
 
-A default deployment of this module provisions the architecture illustrated below on the DigitalOcean cloud platform (minus the external traffic Load Balancer).
+A default deployment of this module provisions an architecture similar to that illustrated below (minus the external traffic Load Balancer). 2x Servers, 1x Agent and a load balancer in front of the servers providing a fixed registration address for the Kubernetes API.
 
 ![](https://res.cloudinary.com/qunux/image/upload/v1618680903/k3s-architecture-ha-server_border_rjwhll.png)
 
 ###### *K3s Architecture with a High-availability Servers - [Source](https://rancher.com/docs/k3s/latest/en/architecture/#high-availability-k3s-server-with-an-external-db)*
 
+## Usage
+Basic usage of this module is as follows:
+```
+module "do-ha-k3s" {
+  source = "github.com/aigisuk/terraform-digitalocean-ha-k3s"
+
+  do_token                  = "7f5ef8eb151e3c81cd893c6...."
+  ssh_key_fingerprints      = ["00:11:22:33:44:55:66:77:88:99:aa:bb:cc:dd:ee:ff"]
+}
+```
+
+A Functional example is included in the
+[examples](./examples/) directory.
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| do_token | DigitalOcean Personal Access Token | string | `N/A` | yes |
+| ssh_key_fingerprints | List of SSH Key fingerprints | list(string) | `N/A` | yes |
+| region | Region in which to deploy cluster | string | `fra1` | no |
+| k3s_channel | K3s release channel. `stable`, `latest`, `testing` or a specific channel or version e.g. `v1.20`, `v1.19.8+k3s1` | string | `"stable"` | no |
+| database_user | Database username | string | `"k3s_default_user"` | no |
+| database_engine | Database engine. PostgreSQL (13) or MySQL (8) | string | `"postgres"` | no |
+| database_size | Database Droplet size associated with the cluster (ex. db-s-1vcpu-1gb) | string |`"db-s-1vcpu-1gb"` | no |
+| database_node_count | Number of nodes that comprise the database cluster | number | `1`| no |
+| flannel_backend | Flannel Backend Type. Valid options include `vxlan`, `host-gw`, `ipsec` (default) or `wireguard` | string | `ipsec`| no |
+| server_size | Server droplet size. e.g. s-1vcpu-2gb | string | `s-1vcpu-2gb`| no |
+| agent_size | Agent droplet size. e.g. s-1vcpu-2gb | string | `s-1vcpu-2gb`| no |
+| server_count | Number of server (master) nodes to provision | number | `2`| no |
+| agent_count | Number of agent (worker) nodes to provision | number | `1`| no |
+| server_taint_criticalonly | Allow only critical addons to be scheduled on servers? (thus preventing workloads from being launched on them) | bool | `true`| no |
+
+## Outputs
+
+TBC
+
 ## Cost
 
-A default deployment comprises the following resources:
+A default deployment of this module provisions the following resources:
 
 | Quantity | Resource | Description | Price/mo ($USD)* | Total/mo ($USD) | Total/hr ($USD) |
 |------|-------------|:----:|:-----:|:-----:|:-----:|
 | **2x** | Server (Master) Node | 1 VPCU, 2GB RAM, 2TB Transfer | 10 | **20** | **0.030** |
-| **2x** | Agent (Worker) Node | 1 VPCU, 2GB RAM, 2TB Transfer | 10 | **20** | **0.030** |
+| **1x** | Agent (Worker) Node | 1 VPCU, 2GB RAM, 2TB Transfer | 10 | **10** | **0.015** |
 | **1x** | Load Balancer | Small  | 10 | **10** | **0.01488** |
 | **1x** | Postgres DB Cluster | Single Basic Node | 15 | **15** | **0.022** |
-|  |  |  | **Total** | **65** | ≈ **0.097** |
+|  |  |  | **Total** | **55** | ≈ **0.082** |
 ##### * Prices correct at time of latest commit (check [digitalocean.com](https://www.digitalocean.com/pricing/) for current pricing)
-##### **N.B.** Keep in mind, additional costs may be incurred through the provisioning of volumes and/or load balancers configured in any application deployment on the cluster.
+##### **N.B.** Keep in mind, additional costs may be incurred through the provisioning of volumes and/or load balancers required by any applications deployed on the cluster.
 
 ## Credits
 

@@ -3,7 +3,6 @@ resource "digitalocean_database_user" "dbuser" {
   name       = var.database_user
 }
 
-
 resource "digitalocean_database_cluster" "k3s" {
   name                 = "k3s-ext-datastore"
   engine               = var.database_engine == "postgres" ? "pg" : "mysql"

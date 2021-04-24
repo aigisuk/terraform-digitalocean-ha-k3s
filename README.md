@@ -68,7 +68,9 @@ Functional examples are included in the
 
 ## Outputs
 
-TBC
+| Name | Description |
+|------|-------------|
+| cluster_summary | A summary of the cluster's provisioned resources. |
 
 ## Cost
 

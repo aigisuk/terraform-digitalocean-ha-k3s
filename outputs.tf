@@ -1,35 +1,19 @@
-output "api_load_balancer_ip" {
-  description = "IP address of the API server load balancer"
-  value       = digitalocean_loadbalancer.k3s_lb.ip
-}
-
-output "name" {
-  description = "Droplet Name"
-  value       = digitalocean_droplet.k3s_server.*.name
-}
-
-output "region" {
-  description = "Droplet Region"
-  value       = digitalocean_droplet.k3s_server.*.region
-}
-
-output "id" {
-  description = "Droplet ID"
-  value       = digitalocean_droplet.k3s_server.*.id
-}
-
-output "ipv4_address" {
-  description = "Droplet Public IPv4 address"
-  value       = digitalocean_droplet.k3s_server.*.ipv4_address
-}
-
-output "ipv4_address_private" {
-  description = "Droplet Private IPv4 address"
-  value       = digitalocean_droplet.k3s_server.*.ipv4_address_private
-}
-
-# Output should be the Total cost of the droplets provisioned
-output "price_monthly" {
-  description = "Droplet Monthly Price"
-  value       = digitalocean_droplet.k3s_server.*.price_monthly
+output "cluster_summary" {
+  description = "Cluster Summary."
+  value = {
+    #cluster_version : local.k3s_version
+    cluster_region : var.region
+    api_server_ip : digitalocean_loadbalancer.k3s_lb.ip
+    servers : local.merged_servers
+    agents : [
+      for key, agent in digitalocean_droplet.k3s_agent :
+      {
+        name       = agent.name
+        ip_public  = agent.ipv4_address
+        ip_private = agent.ipv4_address_private
+        price      = agent.price_monthly
+        id         = agent.id
+      }
+    ]
+  }
 }

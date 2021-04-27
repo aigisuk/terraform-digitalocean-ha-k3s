@@ -1,23 +1,155 @@
 name: 'Terraform GitHub Actions'
 
 on:
+  push:
+    branches:
+    - release
   pull_request:
 
 jobs:
-  terraform:
-    name: 'Terraform Format'
-    runs-on: ubuntu-20.04
-
-    defaults:
-      run:
-        shell: bash
-
+  terraform-fmt:
+    name: Terraform Format
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
 
-    - name: Terraform Format
-      run: terraform fmt -check
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -diff -check -no-color -recursive
+        continue-on-error: true
+
+      - uses: actions/github-script@v4
+        if: github.event_name == 'pull_request' && steps.fmt.outputs.exitcode != 0
+        env:
+          TF_FMT_STDOUT: "${{ steps.fmt.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style 🖌 - \`${{ steps.fmt.outcome }}\`
+            \`\`\`diff
+            ${process.env.TF_FMT_STDOUT}
+            \`\`\`
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+            throw "failed to run `terraform fmt -check -recursive -diff`"
+
+  terraform-plan:
+    name: Terraform Plan
+    needs: terraform-fmt
+    runs-on: ubuntu-latest
+    env:
+      WORKING_DIR: "examples/default_deployment"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -no-color
+        working-directory: ${{ env.WORKING_DIR }}
+        continue-on-error: true
+
+      - uses: actions/github-script@v4
+        if: github.event_name == 'pull_request' && steps.init.outputs.exitcode != 0
+        env:
+          TF_INIT_STDERR: "${{ steps.init.outputs.stderr }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Initialization ⚙️ - \`${{ steps.init.outcome }}\`
+            \`\`\`${ process.env.TF_INIT_STDERR }\`\`\`
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workdir: \`${{ env.WORKING_DIR }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+            throw "failed to run `terraform init`"
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+        working-directory: ${{ env.WORKING_DIR }}
+        continue-on-error: true
+
+      - uses: actions/github-script@v4
+        if: github.event_name == 'pull_request' && steps.validate.outputs.exitcode != 0
+        env:
+          TF_VAL_STDERR: "${{ steps.validate.outputs.stderr }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Initialization ⚙️ - \`${{ steps.init.outcome }}\`
+            #### Terraform Validate 📃 - \`${{ steps.validate.outcome }}\`
+            \`\`\`${ process.env.TF_VAL_STDERR }\`\`\`
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workdir: \`${{ env.WORKING_DIR }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+            throw "failed to run `terraform validate`"
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color
+        working-directory: ${{ env.WORKING_DIR }}
+        continue-on-error: true
+
+      - uses: actions/github-script@v4
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Initialization ⚙️ - \`${{ steps.init.outcome }}\`
+            #### Terraform Validate 📃 - \`${{ steps.validate.outcome }}\`
+            #### Terraform Plan 📖 - \`${{ steps.plan.outcome }}\`
+
+            <details><summary>Show Plan</summary>
+
+            \`\`\`${process.env.PLAN}\`\`\`
+
+            </details>
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workdir: \`${{ env.WORKING_DIR }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      # - name: Terraform Apply
+      #   id: apply
+      #   if: github.ref == 'refs/heads/release' && github.event_name == 'push'
+      #   run: terraform apply -auto-approve
+      #   working-directory: ${{ env.WORKING_DIR }}

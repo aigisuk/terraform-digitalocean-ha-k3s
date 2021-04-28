@@ -1,9 +1,6 @@
 name: 'Terraform GitHub Actions'
 
 on:
-  push:
-    branches:
-    - release
   pull_request:
 
 jobs:

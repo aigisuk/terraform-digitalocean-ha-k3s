@@ -23,7 +23,6 @@ resource "digitalocean_droplet" "k3s_server_init" {
     csi_crds_manifest   = file("${path.module}/manifests/do-csi/crds.yaml")
     csi_driver_manifest = file("${path.module}/manifests/do-csi/driver.yaml")
     csi_sc_manifest     = file("${path.module}/manifests/do-csi/snapshot-controller.yaml")
-    #k8s_dashboard       = file("${path.module}/manifests/k8s-dashboard.yaml")
   })
 }
 

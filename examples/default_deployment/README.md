@@ -12,7 +12,9 @@ This example illustrates how to use the `terraform-digitalocean-ha-k3s` module.
 
 ## Outputs
 
-TBC
+| Name | Description |
+|------|-------------|
+| cluster_summary | A summary of the cluster's provisioned resources. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

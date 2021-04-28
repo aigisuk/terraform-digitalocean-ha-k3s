@@ -1,13 +1,4 @@
 terraform {
-  # Reconfigure the backend block to suit your needs
-  backend "remote" {
-    hostname     = "app.terraform.io"
-    organization = "AIGISUK"
-
-    workspaces {
-      name = "gh-actions-terraform-digitalocean-ha-k3s"
-    }
-  }
   required_providers {
     digitalocean = {
       source = "digitalocean/digitalocean"

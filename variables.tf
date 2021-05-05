@@ -12,11 +12,15 @@ variable "region" {
   type        = string
   description = "Region in which to deploy the cluster"
   default     = "fra1"
+  validation {
+    condition     = length(regexall("^nyc1|sfo1|nyc2|ams2|sgp1|lon1|nyc3|ams3|fra1|tor1|sfo2|blr1|sfo3$", var.region)) > 0
+    error_message = "Invalid region. Valid regions are nyc1, sfo1, nyc2, ams2, sgp1, lon1, nyc3, ams3, fra1, tor1, sfo2, blr1 or sfo3."
+  }
 }
 
 variable "k3s_channel" {
   type        = string
-  description = "K3s release channel. 'stable', 'latest', 'testing' or a specific channel e.g. 'v1.20'"
+  description = "K3s release channel. 'stable', 'latest', 'testing' or a specific channel or version e.g. 'v1.20', 'v1.21.0+k3s1'"
   default     = "stable"
 }
 
@@ -84,4 +88,10 @@ variable "server_taint_criticalonly" {
   type        = bool
   description = "Allow only critical addons to be scheduled on servers? (thus preventing workloads from being launched on them)"
   default     = true
+}
+
+variable "k8s_dashboard" {
+  type        = bool
+  description = "Pre-install the Kubernetes Dashboard? (Default is false)"
+  default     = false
 }

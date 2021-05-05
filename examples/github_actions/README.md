@@ -1,6 +1,6 @@
 # GitHub Actions Deployment Example
 
-This example is specifically for module tests.
+This example is specifically for module tests via GitHub Actions.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs

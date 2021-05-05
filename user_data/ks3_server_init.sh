@@ -55,3 +55,8 @@ EOF
 cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/snapshot-controller.yaml
 ${csi_sc_manifest}
 EOF
+
+kubernetes dashboard
+cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/k8s-dashboard.yaml
+${k8s_dashboard}
+EOF

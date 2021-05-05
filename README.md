@@ -75,24 +75,31 @@ Functional examples are included in the
 
 ## Pre-Install the Kubernetes Dashboard
 
-The [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) can pre pre-installed by setting module variable `k8s_dashboard` to `true`.
+The [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) can pre pre-installed by setting input variable `k8s_dashboard` to `true`.
 
-A Service Account with the name `admin-user` is auto created and granted admin privileges. You can obtain the Bearer Token for the `admin-user` via the following `kubectl` command:
+A Service Account with the name `admin-user` is auto created and granted admin privileges. Use the following `kubectl` command to obtain the Bearer Token for the `admin-user`:
 
 ```
 kubectl -n kubernetes-dashboard describe secret admin-user-token | awk '$1=="token:"{print $2}'
 ```
+Output:
+```
+eyJhbGciOiJSUzI1NiI....JmL-nP-x1SPjOCNfZkg
+```
 
-Then use `kubectl port-forward` to access the dashboard:
+You can use `kubectl port-forward` to access the dashboard:
 
 ```
 kubectl  port-forward -n kubernetes-dashboard service/kubernetes-dashboard 8080:443
 ```
 
-To access Kubernetes Dashboard go to:
+To access the Kubernetes Dashboard go to:
 ```
 https://localhost:8080
 ```
+Select the `Token` option and enter the `admin-user` Bearer Token you obtained earlier and click `Sign in`:
+
+![Kubernetes-Dashboard-Login](https://user-images.githubusercontent.com/12916656/117087905-c3d99800-ad48-11eb-9245-6a73578c5e3a.png)
 
 ## Cost
 

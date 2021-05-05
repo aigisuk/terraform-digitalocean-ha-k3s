@@ -13,7 +13,7 @@ An opinionated Terraform module to provision a high availability [K3s](https://k
 * [x] Option to make Servers (Masters) schedulable. Default is `false` i.e. `CriticalAddonsOnly=true:NoExecute`
 * [x] Cluster database engine is configurable. Choose from **PostgreSQL** (v11) or **MySQL** (v8)
 * [x] Pre-install the Kubernetes Dashboard (optional)
-* [ ] Pre-install Jetstack's [cert-manager](https://github.com/jetstack/cert-manager) (optional)
+* [x] Pre-install Jetstack's [cert-manager](https://github.com/jetstack/cert-manager) (optional)
 * [ ] Pre-install an ingress controller from **Kong**, **Nginx** or **Traefik v2** (optional)
 * [ ] Generate custom `kubeconfig` file (optional)
 
@@ -67,6 +67,7 @@ Functional examples are included in the
 | agent_count | Number of agent (worker) nodes to provision | number | `1`| no |
 | server_taint_criticalonly | Allow only critical addons to be scheduled on servers? (thus preventing workloads from being launched on them) | bool | `true`| no |
 | k8s_dashboard | Pre-Install [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) | bool| `false`| no |
+| cert_manager | Pre-Install [cert-manager](https://cert-manager.io/) | bool| `false`| no |
 
 ## Outputs
 
@@ -113,7 +114,7 @@ A default deployment of this module provisions the following resources:
 | **1x** | Load Balancer | Small  | 10 | **10** | **0.01488** |
 | **1x** | Postgres DB Cluster | Single Basic Node | 15 | **15** | **0.022** |
 |  |  |  | **Total** | **55** | ≈ **0.082** |
-##### * Prices correct at time of latest commit (check [digitalocean.com](https://www.digitalocean.com/pricing/) for current pricing)
+##### * Prices correct at time of latest commit (check [digitalocean.com/pricing](https://www.digitalocean.com/pricing/) for current pricing)
 ##### **N.B.** Keep in mind, additional costs may be incurred through the provisioning of volumes and/or load balancers required by any applications deployed on the cluster.
 
 ## Credits

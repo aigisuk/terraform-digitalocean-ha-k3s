@@ -95,3 +95,9 @@ variable "k8s_dashboard" {
   description = "Pre-install the Kubernetes Dashboard? (Default is false)"
   default     = false
 }
+
+variable "cert_manager" {
+  type        = bool
+  description = "Pre-install cert-manager? (Default is false)"
+  default     = false
+}

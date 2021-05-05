@@ -36,6 +36,9 @@ kubectl -n kube-system create secret generic digitalocean --from-literal=access-
 # create digitalocean env variable configmap
 kubectl -n kube-system create configmap digitalocean --from-literal=do-cluster-vpc-id=${do_cluster_vpc_id}
 
+# install certmanager
+${cert_manager}
+
 # ccm
 cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/do-ccm.yaml
 ${ccm_manifest}
@@ -56,7 +59,7 @@ cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/snapshot-controller
 ${csi_sc_manifest}
 EOF
 
-kubernetes dashboard
+# kubernetes dashboard
 cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/k8s-dashboard.yaml
 ${k8s_dashboard}
 EOF

@@ -87,17 +87,17 @@ Output:
 eyJhbGciOiJSUzI1NiI....JmL-nP-x1SPjOCNfZkg
 ```
 
-You can use `kubectl port-forward` to access the dashboard:
+Use `kubectl port-forward` to access the dashboard:
 
 ```
-kubectl  port-forward -n kubernetes-dashboard service/kubernetes-dashboard 8080:443
+kubectl port-forward -n kubernetes-dashboard service/kubernetes-dashboard 8080:443
 ```
 
 To access the Kubernetes Dashboard go to:
 ```
 https://localhost:8080
 ```
-Select the `Token` option and enter the `admin-user` Bearer Token you obtained earlier and click `Sign in`:
+Select the `Token` option, enter the `admin-user` Bearer Token obtained earlier and click `Sign in`:
 
 ![Kubernetes-Dashboard-Login](https://user-images.githubusercontent.com/12916656/117087905-c3d99800-ad48-11eb-9245-6a73578c5e3a.png)
 

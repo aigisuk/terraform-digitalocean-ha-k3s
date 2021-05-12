@@ -1,7 +1,7 @@
 # Terraform DigitalOcean HA K3S Module
 An opinionated Terraform module to provision a high availability [K3s](https://k3s.io/) cluster with external database on the DigitalOcean cloud platform. Perfect for development or testing.
 
-![Terraform, DigitalOcean, K3s illustration](https://res.cloudinary.com/qunux/image/upload/v1618967113/terraform-digitalocean-k3s-repo-logo_f2zyoz.svg)
+![k3s_cluster_project_on_digitalocean](https://user-images.githubusercontent.com/12916656/118015569-5632fa80-b34c-11eb-8123-703d5341ec96.png)
 
 ## Features
 * [x] High Availability K3s Cluster provisioned on the DigitalOcean platform
@@ -14,6 +14,7 @@ An opinionated Terraform module to provision a high availability [K3s](https://k
 * [x] Cluster database engine is configurable. Choose from **PostgreSQL** (v11) or **MySQL** (v8)
 * [x] Pre-install the Kubernetes Dashboard (optional)
 * [x] Pre-install Jetstack's [cert-manager](https://github.com/jetstack/cert-manager) (optional)
+* [ ] Firewalled Nodes
 * [ ] Pre-install an ingress controller from **Kong**, **Nginx** or **Traefik v2** (optional)
 * [ ] Generate custom `kubeconfig` file (optional)
 

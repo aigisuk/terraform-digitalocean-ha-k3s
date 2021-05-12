@@ -14,6 +14,8 @@ locals {
 
   taint_critical = var.server_taint_criticalonly == true ? local.critical_addons_only_true : "\\"
 
+  install_cert_manager = "kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.3.1/cert-manager.yaml"
+
   servers_init = [
     for key, server in digitalocean_droplet.k3s_server_init :
     {

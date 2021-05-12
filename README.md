@@ -13,7 +13,7 @@ An opinionated Terraform module to provision a high availability [K3s](https://k
 * [x] Option to make Servers (Masters) schedulable. Default is `false` i.e. `CriticalAddonsOnly=true:NoExecute`
 * [x] Cluster database engine is configurable. Choose from **PostgreSQL** (v11) or **MySQL** (v8)
 * [x] Pre-install the Kubernetes Dashboard (optional)
-* [ ] Pre-install Jetstack's [cert-manager](https://github.com/jetstack/cert-manager) (optional)
+* [x] Pre-install Jetstack's [cert-manager](https://github.com/jetstack/cert-manager) (optional)
 * [ ] Pre-install an ingress controller from **Kong**, **Nginx** or **Traefik v2** (optional)
 * [ ] Generate custom `kubeconfig` file (optional)
 
@@ -57,7 +57,7 @@ Functional examples are included in the
 | region | Region in which to deploy cluster | string | `fra1` | no |
 | k3s_channel | K3s release channel. `stable`, `latest`, `testing` or a specific channel or version e.g. `v1.20`, `v1.19.8+k3s1` | string | `"stable"` | no |
 | database_user | Database username | string | `"k3s_default_user"` | no |
-| database_engine | Database engine. PostgreSQL (13) or MySQL (8) | string | `"postgres"` | no |
+| database_engine | Database engine. `postgres` (v13) or `mysql` (v8) | string | `"postgres"` | no |
 | database_size | Database Droplet size associated with the cluster e.g. `db-s-1vcpu-1gb` | string |`"db-s-1vcpu-1gb"` | no |
 | database_node_count | Number of nodes that comprise the database cluster | number | `1`| no |
 | flannel_backend | Flannel Backend Type. Valid options include `vxlan`, `host-gw`, `ipsec` (default) or `wireguard` | string | `ipsec`| no |
@@ -67,6 +67,7 @@ Functional examples are included in the
 | agent_count | Number of agent (worker) nodes to provision | number | `1`| no |
 | server_taint_criticalonly | Allow only critical addons to be scheduled on servers? (thus preventing workloads from being launched on them) | bool | `true`| no |
 | k8s_dashboard | Pre-Install [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) | bool| `false`| no |
+| cert_manager | Pre-Install [cert-manager](https://cert-manager.io/) | bool| `false`| no |
 
 ## Outputs
 
@@ -76,9 +77,9 @@ Functional examples are included in the
 
 ## Pre-Install the Kubernetes Dashboard
 
-The [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) can pre pre-installed by setting input variable `k8s_dashboard` to `true`.
+The [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) can pre-installed by setting the `k8s_dashboard` input variable to `true`.
 
-A Service Account with the name `admin-user` is auto created and granted admin privileges. Use the following `kubectl` command to obtain the Bearer Token for the `admin-user`:
+This auto-creates a Service Account named `admin-user` with admin privileges granted. The following `kubectl` command outputs the Bearer Token for the `admin-user`:
 
 ```
 kubectl -n kubernetes-dashboard describe secret admin-user-token | awk '$1=="token:"{print $2}'
@@ -88,7 +89,7 @@ Output:
 eyJhbGciOiJSUzI1NiI....JmL-nP-x1SPjOCNfZkg
 ```
 
-Use `kubectl port-forward` to access the dashboard:
+Use `kubectl port-forward` to forward a local port to the dashboard:
 
 ```
 kubectl port-forward -n kubernetes-dashboard service/kubernetes-dashboard 8080:443
@@ -113,7 +114,7 @@ A default deployment of this module provisions the following resources:
 | **1x** | Load Balancer | Small  | 10 | **10** | **0.01488** |
 | **1x** | Postgres DB Cluster | Single Basic Node | 15 | **15** | **0.022** |
 |  |  |  | **Total** | **55** | ≈ **0.082** |
-##### * Prices correct at time of latest commit (check [digitalocean.com](https://www.digitalocean.com/pricing/) for current pricing)
+##### * Prices correct at time of latest commit (check [digitalocean.com/pricing](https://www.digitalocean.com/pricing/) for current pricing)
 ##### **N.B.** Keep in mind, additional costs may be incurred through the provisioning of volumes and/or load balancers required by any applications deployed on the cluster.
 
 ## Credits

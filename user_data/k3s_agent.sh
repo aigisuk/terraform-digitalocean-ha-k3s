@@ -7,7 +7,7 @@ apt-get install -yq \
     ntp \
     wireguard
 
-# Store Droplet ID in variable (uses DO Metadata Service - https://developers.digitalocean.com/documentation/metadata/)
+# Store Droplet ID in variable (utilises DO's Metadata Service - https://developers.digitalocean.com/documentation/metadata/)
 DROPLET_ID=$(curl -s http://169.254.169.254/metadata/v1/id)
 
 # k3s

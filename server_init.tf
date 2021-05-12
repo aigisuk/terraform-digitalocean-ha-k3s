@@ -24,6 +24,7 @@ resource "digitalocean_droplet" "k3s_server_init" {
     csi_driver_manifest = file("${path.module}/manifests/do-csi/driver.yaml")
     csi_sc_manifest     = file("${path.module}/manifests/do-csi/snapshot-controller.yaml")
     k8s_dashboard       = var.k8s_dashboard == true ? file("${path.module}/manifests/k8s-dashboard.yaml") : ""
+    cert_manager        = var.cert_manager == true ? local.install_cert_manager : ""
   })
 }
 

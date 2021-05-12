@@ -7,7 +7,7 @@ apt-get install -yq \
     ntp \
     wireguard
 
-# Store Droplet ID in variable (uses DO Metadata Service - https://developers.digitalocean.com/documentation/metadata/)
+# Store Droplet ID in variable (utilises DO's Metadata Service - https://developers.digitalocean.com/documentation/metadata/)
 DROPLET_ID=$(curl -s http://169.254.169.254/metadata/v1/id)
 
 # k3s
@@ -36,6 +36,9 @@ kubectl -n kube-system create secret generic digitalocean --from-literal=access-
 # create digitalocean env variable configmap
 kubectl -n kube-system create configmap digitalocean --from-literal=do-cluster-vpc-id=${do_cluster_vpc_id}
 
+# install certmanager
+${cert_manager}
+
 # ccm
 cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/do-ccm.yaml
 ${ccm_manifest}
@@ -56,7 +59,7 @@ cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/snapshot-controller
 ${csi_sc_manifest}
 EOF
 
-kubernetes dashboard
+# kubernetes dashboard
 cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/k8s-dashboard.yaml
 ${k8s_dashboard}
 EOF

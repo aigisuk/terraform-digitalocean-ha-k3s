@@ -57,7 +57,7 @@ Functional examples are included in the
 | region | Region in which to deploy cluster | string | `fra1` | no |
 | k3s_channel | K3s release channel. `stable`, `latest`, `testing` or a specific channel or version e.g. `v1.20`, `v1.19.8+k3s1` | string | `"stable"` | no |
 | database_user | Database username | string | `"k3s_default_user"` | no |
-| database_engine | Database engine. PostgreSQL (13) or MySQL (8) | string | `"postgres"` | no |
+| database_engine | Database engine. `postgres` (v13) or `mysql` (v8) | string | `"postgres"` | no |
 | database_size | Database Droplet size associated with the cluster e.g. `db-s-1vcpu-1gb` | string |`"db-s-1vcpu-1gb"` | no |
 | database_node_count | Number of nodes that comprise the database cluster | number | `1`| no |
 | flannel_backend | Flannel Backend Type. Valid options include `vxlan`, `host-gw`, `ipsec` (default) or `wireguard` | string | `ipsec`| no |
@@ -77,9 +77,9 @@ Functional examples are included in the
 
 ## Pre-Install the Kubernetes Dashboard
 
-The [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) can pre pre-installed by setting input variable `k8s_dashboard` to `true`.
+The [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) can pre-installed by setting the `k8s_dashboard` input variable to `true`.
 
-A Service Account with the name `admin-user` is auto created and granted admin privileges. Use the following `kubectl` command to obtain the Bearer Token for the `admin-user`:
+This auto-creates a Service Account named `admin-user` with admin privileges granted. The following `kubectl` command outputs the Bearer Token for the `admin-user`:
 
 ```
 kubectl -n kubernetes-dashboard describe secret admin-user-token | awk '$1=="token:"{print $2}'
@@ -89,7 +89,7 @@ Output:
 eyJhbGciOiJSUzI1NiI....JmL-nP-x1SPjOCNfZkg
 ```
 
-Use `kubectl port-forward` to access the dashboard:
+Use `kubectl port-forward` to forward a local port to the dashboard:
 
 ```
 kubectl port-forward -n kubernetes-dashboard service/kubernetes-dashboard 8080:443

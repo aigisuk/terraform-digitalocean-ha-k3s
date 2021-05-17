@@ -48,6 +48,8 @@ module "do-ha-k3s" {
 }
 ```
 
+> To manage K3s from outside the cluster, SSH into a Server node and copy the contents of `/etc/rancher/k3s/k3s.yaml` to `~/.kube/config` on an external machine where you have installed `kubectl`, replacing `127.0.0.1` with the API Load Balancer IP address of your K3s Cluster (the `api_server_ip` key from the Terraform `cluster_summary` output).
+
 Functional examples are included in the
 [examples](./examples/) directory.
 

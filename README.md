@@ -16,7 +16,7 @@ An opinionated Terraform module to provision a high availability [K3s](https://k
 * [x] Cluster database engine is configurable. Choose between **PostgreSQL** (v11) or **MySQL** (v8)
 * [x] Pre-install the Kubernetes Dashboard (optional)
 * [x] Pre-install Jetstack's [cert-manager](https://github.com/jetstack/cert-manager) (optional)
-* [ ] Firewalled Nodes & Database
+* [x] Firewalled Nodes & Database
 * [ ] Pre-install an ingress controller from **Kong**, **Nginx** or **Traefik v2** (optional)
 * [ ] Generate custom `kubeconfig` file (optional)
 
@@ -58,6 +58,7 @@ Functional examples are included in the
 | do_token | DigitalOcean Personal Access Token | string | N/A | yes |
 | ssh_key_fingerprints | List of SSH Key fingerprints | list(string) | N/A | yes |
 | region | Region in which to deploy cluster | string | `fra1` | no |
+| vpc_network_range | Range of IP addresses for the VPC in CIDR notation | string | `10.10.10.0/24` | no |
 | k3s_channel | K3s release channel. `stable`, `latest`, `testing` or a specific channel or version e.g. `v1.20`, `v1.19.8+k3s1` | string | `"stable"` | no |
 | database_user | Database username | string | `"k3s_default_user"` | no |
 | database_engine | Database engine. `postgres` (v13) or `mysql` (v8) | string | `"postgres"` | no |

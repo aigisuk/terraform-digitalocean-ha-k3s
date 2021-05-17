@@ -1,20 +1,22 @@
 # Terraform DigitalOcean HA K3S Module
 An opinionated Terraform module to provision a high availability [K3s](https://k3s.io/) cluster with external database on the DigitalOcean cloud platform. Perfect for development or testing.
 
-![k3s_cluster_project_on_digitalocean](https://user-images.githubusercontent.com/12916656/118015569-5632fa80-b34c-11eb-8123-703d5341ec96.png)
+![k3s_cluster_project_on_digitalocean](https://user-images.githubusercontent.com/12916656/118027873-5508ca00-b35a-11eb-9346-4a605942857b.png)
 
 ## Features
 * [x] High Availability K3s Cluster provisioned on the DigitalOcean platform
 * [x] Managed **PostgreSQL**/**MySQL** database provisioned. Serves as the datastore for the cluster's state (configurable options: size & node count)
+* [x] Cluster uses a dedicated VPC (IP Range: `10.10.10.0/24`)
 * [x] The number of provisioned Servers (Masters) and Agents (Workers) is configurable
 * [x] Cluster API/Servers are behind a provisioned load balancer for high availability
+* [x] All resources assigned to a dedicated DigitalOcean project (expect Load Balancers auto provisioned by apps)
 * [x] Flannel backend is configurable. Choose from `vxlan`, `host-gw`, `ipsec` (default) or `wireguard`
 * [x] DigitalOcean's CCM ([Cloud Controller Manager](https://github.com/digitalocean/digitalocean-cloud-controller-manager)) and CSI ([Container Storage Interface](https://github.com/digitalocean/csi-digitalocean)) plugins are pre-installed. Enables the cluster to leverage DigitalOcean's load balancer and volume resources
 * [x] Option to make Servers (Masters) schedulable. Default is `false` i.e. `CriticalAddonsOnly=true:NoExecute`
-* [x] Cluster database engine is configurable. Choose from **PostgreSQL** (v11) or **MySQL** (v8)
+* [x] Cluster database engine is configurable. Choose between **PostgreSQL** (v11) or **MySQL** (v8)
 * [x] Pre-install the Kubernetes Dashboard (optional)
 * [x] Pre-install Jetstack's [cert-manager](https://github.com/jetstack/cert-manager) (optional)
-* [ ] Firewalled Nodes
+* [ ] Firewalled Nodes & Database
 * [ ] Pre-install an ingress controller from **Kong**, **Nginx** or **Traefik v2** (optional)
 * [ ] Generate custom `kubeconfig` file (optional)
 

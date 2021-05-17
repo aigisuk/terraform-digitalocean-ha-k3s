@@ -10,12 +10,18 @@ variable "ssh_key_fingerprints" {
 
 variable "region" {
   type        = string
-  description = "Region in which to deploy the cluster"
+  description = "Region in which to deploy the cluster. Default is fra1 (Frankfurt, Germany)"
   default     = "fra1"
   validation {
     condition     = length(regexall("^nyc1|sfo1|nyc2|ams2|sgp1|lon1|nyc3|ams3|fra1|tor1|sfo2|blr1|sfo3$", var.region)) > 0
     error_message = "Invalid region. Valid regions are nyc1, sfo1, nyc2, ams2, sgp1, lon1, nyc3, ams3, fra1, tor1, sfo2, blr1 or sfo3."
   }
+}
+
+variable "vpc_network_range" {
+  type        = string
+  description = "Range of IP addresses for the VPC in CIDR notation. Cannot be larger than /16 or smaller than /24. Default is 10.10.10.0/24"
+  default     = "10.10.10.0/24"
 }
 
 variable "k3s_channel" {

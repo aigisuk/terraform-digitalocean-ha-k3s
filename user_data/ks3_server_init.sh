@@ -34,7 +34,7 @@ done
 kubectl -n kube-system create secret generic digitalocean --from-literal=access-token=${do_token}
 
 # create digitalocean env variable configmap
-kubectl -n kube-system create configmap digitalocean --from-literal=do-cluster-vpc-id=${do_cluster_vpc_id}
+kubectl -n kube-system create configmap digitalocean --from-literal=do-cluster-vpc-id=${do_cluster_vpc_id} --from-literal=public-access-firewall-name=${do_ccm_fw_name} --from-literal=public-access-firewall-tags=${do_ccm_fw_tags}
 
 # install certmanager
 ${cert_manager}

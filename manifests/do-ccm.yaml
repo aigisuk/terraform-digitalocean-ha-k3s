@@ -48,6 +48,16 @@ spec:
               configMapKeyRef:
                 name: digitalocean
                 key: do-cluster-vpc-id
+          - name: PUBLIC_ACCESS_FIREWALL_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: digitalocean
+                key: public-access-firewall-name
+          - name: PUBLIC_ACCESS_FIREWALL_TAGS
+            valueFrom:
+              configMapKeyRef:
+                name: digitalocean
+                key: public-access-firewall-tags
           - name: DO_ACCESS_TOKEN
             valueFrom:
               secretKeyRef:

@@ -1,5 +1,5 @@
 locals {
-  db_host = digitalocean_database_cluster.k3s.host
+  db_host = digitalocean_database_cluster.k3s.private_host
   db_port = digitalocean_database_cluster.k3s.port
   db_user = var.database_user
   db_pass = digitalocean_database_user.dbuser.password
@@ -9,6 +9,10 @@ locals {
   mysql_uri    = "mysql://${local.db_user}:${local.db_pass}@tcp(${local.db_host}:${local.db_port})/${local.db_name}"
 
   db_cluster_uri = var.database_engine == "postgres" ? local.postgres_uri : local.mysql_uri
+
+  server_droplet_tag = "k3s_server"
+  agent_droplet_tag  = "k3s_agent"
+  ccm_fw_tags        = var.server_taint_criticalonly == false ? join(",", [local.server_droplet_tag, local.agent_droplet_tag]) : local.agent_droplet_tag
 
   critical_addons_only_true = "--node-taint \"CriticalAddonsOnly=true:NoExecute\" \\"
 

@@ -17,7 +17,7 @@ resource "digitalocean_loadbalancer" "k3s_lb" {
     protocol = "tcp"
   }
 
-  droplet_tag = "k3s_server"
+  droplet_tag = local.server_droplet_tag
 }
 
 resource "digitalocean_project_resources" "k3s_api_server_lb" {

@@ -3,7 +3,7 @@ resource "digitalocean_droplet" "k3s_server_init" {
   name  = "k3s-server-${var.region}-${random_id.server_node_id[count.index].hex}-1"
 
   image              = "ubuntu-20-04-x64"
-  tags               = ["k3s_server"]
+  tags               = [local.server_droplet_tag]
   region             = var.region
   size               = var.server_size
   monitoring         = true
@@ -15,6 +15,8 @@ resource "digitalocean_droplet" "k3s_server_init" {
     k3s_token           = random_password.k3s_token.result
     do_token            = var.do_token
     do_cluster_vpc_id   = digitalocean_vpc.k3s_vpc.id
+    do_ccm_fw_name      = digitalocean_firewall.ccm_firewall.name
+    do_ccm_fw_tags      = local.ccm_fw_tags
     flannel_backend     = var.flannel_backend
     k3s_lb_ip           = digitalocean_loadbalancer.k3s_lb.ip
     db_cluster_uri      = local.db_cluster_uri

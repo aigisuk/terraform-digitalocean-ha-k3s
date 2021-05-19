@@ -1,5 +1,5 @@
 locals {
-  db_host = digitalocean_database_cluster.k3s.host
+  db_host = digitalocean_database_cluster.k3s.private_host
   db_port = digitalocean_database_cluster.k3s.port
   db_user = var.database_user
   db_pass = digitalocean_database_user.dbuser.password

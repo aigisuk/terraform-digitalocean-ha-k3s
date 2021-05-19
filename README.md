@@ -6,9 +6,9 @@ An opinionated Terraform module to provision a high availability [K3s](https://k
 ## Features
 * [x] High Availability K3s Cluster provisioned on the DigitalOcean platform
 * [x] Managed **PostgreSQL**/**MySQL** database provisioned. Serves as the datastore for the cluster's state (configurable options: size & node count)
-* [x] Cluster uses a dedicated VPC (IP Range: `10.10.10.0/24`)
-* [x] The number of provisioned Servers (Masters) and Agents (Workers) is configurable
-* [x] Cluster API/Servers are behind a provisioned load balancer for high availability
+* [x] Dedicated VPC provisioned for cluster use (IP Range: `10.10.10.0/24`)
+* [x] Number of provisioned Servers (Masters) and Agents (Workers) is configurable
+* [x] Cluster API/Server(s) are behind a provisioned load balancer for high availability
 * [x] All resources assigned to a dedicated DigitalOcean project (expect Load Balancers auto provisioned by apps)
 * [x] Flannel backend is configurable. Choose from `vxlan`, `host-gw`, `ipsec` (default) or `wireguard`
 * [x] DigitalOcean's CCM ([Cloud Controller Manager](https://github.com/digitalocean/digitalocean-cloud-controller-manager)) and CSI ([Container Storage Interface](https://github.com/digitalocean/csi-digitalocean)) plugins are pre-installed. Enables the cluster to leverage DigitalOcean's load balancer and volume resources
@@ -47,8 +47,33 @@ module "do-ha-k3s" {
   ssh_key_fingerprints      = ["00:11:22:33:44:55:66:77:88:99:aa:bb:cc:dd:ee:ff"]
 }
 ```
+Output:
+```
+cluster_summary = {
+  "agents" = [
+    {
+      "id" = "246675800"
+      "ip_private" = "10.10.10.4"
+      "ip_public" = "46.101.198.72"
+      "name" = "k3s-agent-fra1-66a5-1"
+      "price" = 10
+    },
+  ]
+  "api_server_ip" = "157.245.23.155"
+  "cluster_region" = "fra1"
+  "servers" = [
+    {
+      "id" = "246676178"
+      "ip_private" = "10.10.10.5"
+      "ip_public" = "188.166.161.1"
+      "name" = "k3s-server-fra1-c4eb-1"
+      "price" = 10
+    },
+  ]
+}
+```
 
-> To manage K3s from outside the cluster, SSH into a Server node and copy the contents of `/etc/rancher/k3s/k3s.yaml` to `~/.kube/config` on an external machine where you have installed `kubectl`, replacing `127.0.0.1` with the API Load Balancer IP address of your K3s Cluster (the `api_server_ip` key from the Terraform `cluster_summary` output).
+> To manage K3s from outside the cluster, SSH into any Server node and copy the contents of `/etc/rancher/k3s/k3s.yaml` to `~/.kube/config` on an external machine where you have installed `kubectl`, replacing `127.0.0.1` with the API Load Balancer IP address of your K3s Cluster (the `api_server_ip` key from the Terraform `cluster_summary` output).
 
 Functional examples are included in the
 [examples](./examples/) directory.
@@ -66,7 +91,7 @@ Functional examples are included in the
 | database_engine | Database engine. `postgres` (v13) or `mysql` (v8) | string | `"postgres"` | no |
 | database_size | Database Droplet size associated with the cluster e.g. `db-s-1vcpu-1gb` | string |`"db-s-1vcpu-1gb"` | no |
 | database_node_count | Number of nodes that comprise the database cluster | number | `1`| no |
-| flannel_backend | Flannel Backend Type. Valid options include `vxlan`, `host-gw`, `ipsec` (default) or `wireguard` | string | `ipsec`| no |
+| flannel_backend | Flannel Backend Type. Valid options include `vxlan`, `ipsec` or `wireguard` | string | `vxlan`| no |
 | server_size | Server droplet size. e.g. `s-1vcpu-2gb` | string | `s-1vcpu-2gb`| no |
 | agent_size | Agent droplet size. e.g. `s-1vcpu-2gb` | string | `s-1vcpu-2gb`| no |
 | server_count | Number of server (master) nodes to provision | number | `2`| no |

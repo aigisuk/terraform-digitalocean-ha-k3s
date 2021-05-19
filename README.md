@@ -47,26 +47,33 @@ module "do-ha-k3s" {
   ssh_key_fingerprints      = ["00:11:22:33:44:55:66:77:88:99:aa:bb:cc:dd:ee:ff"]
 }
 ```
-Output:
+Example output:
 ```
 cluster_summary = {
   "agents" = [
     {
-      "id" = "246675800"
+      "id" = "246685594"
       "ip_private" = "10.10.10.4"
-      "ip_public" = "46.101.198.72"
-      "name" = "k3s-agent-fra1-66a5-1"
+      "ip_public" = "203.0.113.10"
+      "name" = "k3s-agent-fra1-1a9f-1"
       "price" = 10
     },
   ]
-  "api_server_ip" = "157.245.23.155"
+  "api_server_ip" = "198.51.100.10"
   "cluster_region" = "fra1"
   "servers" = [
     {
-      "id" = "246676178"
+      "id" = "246685751"
       "ip_private" = "10.10.10.5"
-      "ip_public" = "188.166.161.1"
-      "name" = "k3s-server-fra1-c4eb-1"
+      "ip_public" = "203.0.113.11"
+      "name" = "k3s-server-fra1-55b4-1"
+      "price" = 10
+    },
+    {
+      "id" = "246685808"
+      "ip_private" = "10.10.10.6"
+      "ip_public" = "203.0.113.12"
+      "name" = "k3s-server-fra1-d6e7-2"
       "price" = 10
     },
   ]

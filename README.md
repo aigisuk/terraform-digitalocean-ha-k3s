@@ -9,15 +9,17 @@ An opinionated Terraform module to provision a high availability [K3s](https://k
 * [x] Dedicated VPC provisioned for cluster use (IP Range: `10.10.10.0/24`)
 * [x] Number of provisioned Servers (Masters) and Agents (Workers) is configurable
 * [x] Cluster API/Server(s) are behind a provisioned load balancer for high availability
-* [x] All resources assigned to a dedicated DigitalOcean project (expect Load Balancers auto provisioned by apps)
-* [x] Flannel backend is configurable. Choose from `vxlan`, `host-gw`, `ipsec` (default) or `wireguard`
+* [x] All resources assigned to a dedicated DigitalOcean project (expect Load Balancers provisioned by app deployments)
+* [x] Flannel backend is configurable. Choose from `vxlan` (default), `ipsec` or `wireguard`
 * [x] DigitalOcean's CCM ([Cloud Controller Manager](https://github.com/digitalocean/digitalocean-cloud-controller-manager)) and CSI ([Container Storage Interface](https://github.com/digitalocean/csi-digitalocean)) plugins are pre-installed. Enables the cluster to leverage DigitalOcean's load balancer and volume resources
 * [x] Option to make Servers (Masters) schedulable. Default is `false` i.e. `CriticalAddonsOnly=true:NoExecute`
 * [x] Cluster database engine is configurable. Choose between **PostgreSQL** (v11) or **MySQL** (v8)
+* [x] Pre-install [System Upgrade Controller](https://github.com/rancher/system-upgrade-controller) to manage [automated upgrades](https://rancher.com/docs/k3s/latest/en/upgrades/automated/) of the cluster
 * [x] Pre-install the Kubernetes Dashboard (optional)
 * [x] Pre-install Jetstack's [cert-manager](https://github.com/jetstack/cert-manager) (optional)
 * [x] Firewalled Nodes & Database
-* [ ] Pre-install an ingress controller from **Kong**, **Nginx** or **Traefik v2** (optional)
+* [ ] Enable automated K3s cluster upgrades via the [System Upgrade Controller](https://github.com/rancher/system-upgrade-controller) (optional)
+* [ ] Pre-install an ingress controller from **Kong** (Postgres or [DB-less mode](https://docs.konghq.com/gateway-oss/2.4.x/db-less-and-declarative-config/)), **Nginx** or **Traefik v2** (optional)
 * [ ] Generate custom `kubeconfig` file (optional)
 
 ## Compatibility/Requirements
@@ -80,7 +82,7 @@ cluster_summary = {
 }
 ```
 
-> To manage K3s from outside the cluster, SSH into any Server node and copy the contents of `/etc/rancher/k3s/k3s.yaml` to `~/.kube/config` on an external machine where you have installed `kubectl`, replacing `127.0.0.1` with the API Load Balancer IP address of your K3s Cluster (the `api_server_ip` key from the Terraform `cluster_summary` output).
+> To manage K3s from outside the cluster, SSH into any Server node and copy the contents of `/etc/rancher/k3s/k3s.yaml` to `~/.kube/config` on an external machine where you have installed `kubectl`, replacing `127.0.0.1` with the API Load Balancer IP address of your K3s Cluster (value for the `api_server_ip` key from the Terraform `cluster_summary` output).
 
 Functional examples are included in the
 [examples](./examples/) directory.
@@ -103,9 +105,13 @@ Functional examples are included in the
 | agent_size | Agent droplet size. e.g. `s-1vcpu-2gb` | string | `s-1vcpu-2gb`| no |
 | server_count | Number of server (master) nodes to provision | number | `2`| no |
 | agent_count | Number of agent (worker) nodes to provision | number | `1`| no |
-| server_taint_criticalonly | Allow only critical addons to be scheduled on servers? (thus preventing workloads from being launched on them) | bool | `true`| no |
-| k8s_dashboard | Pre-Install [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) | bool| `false`| no |
-| cert_manager | Pre-Install [cert-manager](https://cert-manager.io/) | bool| `false`| no |
+| server_taint_criticalonly | Allow only critical addons to be scheduled on server nodes? (thus preventing workloads from being launched on them) | bool | `true`| no |
+| sys_upgrade_ctrl | Pre-install the [System Upgrade Controller](https://github.com/rancher/system-upgrade-controller) | bool | `false`| no |
+| ingress | Install an ingress controller. `none`, `kong`, `kong_pg` | string | `"none"`| no |
+| k8s_dashboard | Pre-Install [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) | bool | `false`| no |
+| k8s_dashboard_version | [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) version | string | `2.3.1`| no |
+| cert_manager | Pre-Install [cert-manager](https://cert-manager.io/) | bool | `false`| no |
+| cert_manager_version | [cert-manager](https://cert-manager.io/) version | string | `1.4.0`| no |
 
 ## Outputs
 
@@ -152,8 +158,8 @@ A default deployment of this module provisions the following resources:
 | **1x** | Load Balancer | Small  | 10 | **10** | **0.01488** |
 | **1x** | Postgres DB Cluster | Single Basic Node | 15 | **15** | **0.022** |
 |  |  |  | **Total** | **55** | ≈ **0.082** |
-##### * Prices correct at time of latest commit (check [digitalocean.com/pricing](https://www.digitalocean.com/pricing/) for current pricing)
-##### **N.B.** Keep in mind, additional costs may be incurred through the provisioning of volumes and/or load balancers required by any applications deployed on the cluster.
+##### * Prices correct at time of latest commit. Check [digitalocean.com/pricing](https://www.digitalocean.com/pricing/) for current pricing.
+##### **N.B.** Additional costs may be incurred through the provisioning of volumes and/or load balancers required by any applications deployed to the cluster.
 
 ## Credits
 

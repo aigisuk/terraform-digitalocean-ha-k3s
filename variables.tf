@@ -102,8 +102,37 @@ variable "k8s_dashboard" {
   default     = false
 }
 
+variable "k8s_dashboard_version" {
+  type        = string
+  description = "Kubernetes Dashboard version"
+  default     = "2.3.1"
+}
+
 variable "cert_manager" {
   type        = bool
   description = "Pre-install cert-manager? (Default is false)"
   default     = false
+}
+
+variable "cert_manager_version" {
+  type        = string
+  description = "cert-manager version"
+  default     = "1.4.0"
+
+}
+
+variable "sys_upgrade_ctrl" {
+  type        = bool
+  description = "Pre-install the System Upgrade Controller?"
+  default     = false
+}
+
+variable "ingress" {
+  type        = string
+  description = "Ingress controller to install"
+  default     = "none"
+  validation {
+    condition     = length(regexall("^kong|kong_pg|nginx|traefik|none$", var.ingress)) > 0
+    error_message = "Invalid ingress type. Valid ingress types are kong, kong_pg, traefik or nginx."
+  }
 }

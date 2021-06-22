@@ -14,11 +14,10 @@ An opinionated Terraform module to provision a high availability [K3s](https://k
 * [x] DigitalOcean's CCM ([Cloud Controller Manager](https://github.com/digitalocean/digitalocean-cloud-controller-manager)) and CSI ([Container Storage Interface](https://github.com/digitalocean/csi-digitalocean)) plugins are pre-installed. Enables the cluster to leverage DigitalOcean's load balancer and volume resources
 * [x] Option to make Servers (Masters) schedulable. Default is `false` i.e. `CriticalAddonsOnly=true:NoExecute`
 * [x] Cluster database engine is configurable. Choose between **PostgreSQL** (v11) or **MySQL** (v8)
-* [x] Pre-install [System Upgrade Controller](https://github.com/rancher/system-upgrade-controller) to manage [automated upgrades](https://rancher.com/docs/k3s/latest/en/upgrades/automated/) of the cluster
+* [x] Pre-install [System Upgrade Controller](https://github.com/rancher/system-upgrade-controller) to manage [automated upgrades](https://rancher.com/docs/k3s/latest/en/upgrades/automated/) of the cluster (optional)
 * [x] Pre-install the Kubernetes Dashboard (optional)
 * [x] Pre-install Jetstack's [cert-manager](https://github.com/jetstack/cert-manager) (optional)
 * [x] Firewalled Nodes & Database
-* [ ] Enable automated K3s cluster upgrades via the [System Upgrade Controller](https://github.com/rancher/system-upgrade-controller) (optional)
 * [ ] Pre-install an ingress controller from **Kong** (Postgres or [DB-less mode](https://docs.konghq.com/gateway-oss/2.4.x/db-less-and-declarative-config/)), **Nginx** or **Traefik v2** (optional)
 * [ ] Generate custom `kubeconfig` file (optional)
 

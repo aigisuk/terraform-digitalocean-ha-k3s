@@ -28,7 +28,7 @@ An opinionated Terraform module to provision a high availability [K3s](https://k
 
 ## Tutorial
 
-TBC
+[Deploy a HA K3s Cluster on DigitalOcean in 10 minutes using Terraform](https://colinwilson.uk/2021/04/04/deploy-a-ha-k3s-cluster-on-digitalocean-in-10-minutes-using-terraform/)
 
 ## Architecture
 

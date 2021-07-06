@@ -13,9 +13,9 @@ An opinionated Terraform module to provision a high availability [K3s](https://k
 * [x] Flannel backend is configurable. Choose from `vxlan` (default), `ipsec` or `wireguard`
 * [x] DigitalOcean's CCM ([Cloud Controller Manager](https://github.com/digitalocean/digitalocean-cloud-controller-manager)) and CSI ([Container Storage Interface](https://github.com/digitalocean/csi-digitalocean)) plugins are pre-installed. Enables the cluster to leverage DigitalOcean's load balancer and volume resources
 * [x] Option to make Servers (Masters) schedulable. Default is `false` i.e. `CriticalAddonsOnly=true:NoExecute`
-* [x] Cluster database engine is configurable. Choose between **PostgreSQL** (v11) or **MySQL** (v8)
+* [x] Cluster database engine is configurable. Choose between **PostgreSQL** (v11, default) or **MySQL** (v8)
 * [x] Pre-install [System Upgrade Controller](https://github.com/rancher/system-upgrade-controller) to manage [automated upgrades](https://rancher.com/docs/k3s/latest/en/upgrades/automated/) of the cluster (optional)
-* [x] Pre-install the Kubernetes Dashboard (optional)
+* [x] Pre-install the [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) (optional)
 * [x] Pre-install Jetstack's [cert-manager](https://github.com/jetstack/cert-manager) (optional)
 * [x] Firewalled Nodes & Database
 * [ ] Pre-install an ingress controller from **Kong** (Postgres or [DB-less mode](https://docs.konghq.com/gateway-oss/2.4.x/db-less-and-declarative-config/)), **Nginx** or **Traefik v2** (optional)
@@ -81,7 +81,15 @@ cluster_summary = {
 }
 ```
 
-> To manage K3s from outside the cluster, SSH into any Server node and copy the contents of `/etc/rancher/k3s/k3s.yaml` to `~/.kube/config` on an external machine where you have installed `kubectl`, replacing `127.0.0.1` with the API Load Balancer IP address of your K3s Cluster (value for the `api_server_ip` key from the Terraform `cluster_summary` output).
+To manage K3s from outside the cluster, SSH into any Server node and copy the contents of `/etc/rancher/k3s/k3s.yaml` to `~/.kube/config` on an external machine where you have installed `kubectl`.
+```
+sudo scp -i .ssh/your_private_key root@203.0.113.11:/etc/rancher/k3s/k3s.yaml ~/.kube/config
+```
+
+Then replace `127.0.0.1` with the API Load Balancer IP address of your K3s Cluster (value for the `api_server_ip` key from the Terraform `cluster_summary` output).
+```
+sudo sed -i -e "s/127.0.0.1/198.51.100.10/g" ~/.kube/config
+```
 
 Functional examples are included in the
 [examples](./examples/) directory.

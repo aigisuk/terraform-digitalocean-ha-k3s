@@ -2,14 +2,13 @@ resource "digitalocean_droplet" "k3s_server_init" {
   count = 1
   name  = "k3s-server-${var.region}-${random_id.server_node_id[count.index].hex}-1"
 
-  image              = "ubuntu-20-04-x64"
-  tags               = [local.server_droplet_tag]
-  region             = var.region
-  size               = var.server_size
-  monitoring         = true
-  private_networking = true
-  vpc_uuid           = digitalocean_vpc.k3s_vpc.id
-  ssh_keys           = var.ssh_key_fingerprints
+  image      = "ubuntu-20-04-x64"
+  tags       = [local.server_droplet_tag]
+  region     = var.region
+  size       = var.server_size
+  monitoring = true
+  vpc_uuid   = digitalocean_vpc.k3s_vpc.id
+  ssh_keys   = var.ssh_key_fingerprints
   user_data = templatefile("${path.module}/user_data/ks3_server_init.sh", {
     k3s_channel         = var.k3s_channel
     k3s_token           = random_password.k3s_token.result
@@ -21,12 +20,20 @@ resource "digitalocean_droplet" "k3s_server_init" {
     k3s_lb_ip           = digitalocean_loadbalancer.k3s_lb.ip
     db_cluster_uri      = local.db_cluster_uri
     critical_taint      = local.taint_critical
-    ccm_manifest        = file("${path.module}/manifests/do-ccm.yaml")
-    csi_crds_manifest   = file("${path.module}/manifests/do-csi/crds.yaml")
-    csi_driver_manifest = file("${path.module}/manifests/do-csi/driver.yaml")
-    csi_sc_manifest     = file("${path.module}/manifests/do-csi/snapshot-controller.yaml")
-    k8s_dashboard       = var.k8s_dashboard == true ? file("${path.module}/manifests/k8s-dashboard.yaml") : ""
-    cert_manager        = var.cert_manager == true ? local.install_cert_manager : ""
+    ccm_manifest        = base64gzip(file("${path.module}/manifests/do-ccm.yaml"))
+    csi_crds_manifest   = base64gzip(file("${path.module}/manifests/do-csi/crds.yaml"))
+    csi_driver_manifest = base64gzip(file("${path.module}/manifests/do-csi/driver.yaml"))
+    csi_sc_manifest     = base64gzip(file("${path.module}/manifests/do-csi/snapshot-controller.yaml"))
+    traefik_ingress = var.ingress == "traefik" ? base64gzip(templatefile("${path.module}/manifests/traefik-custom.yaml", {
+      traefik_auth_secret = local.traefik_auth_secret
+    })) : ""
+    kong_ingress_postgres = var.ingress == "kong_pg" ? base64gzip(file("${path.module}/manifests/kong-all-in-one-postgres.yaml")) : ""
+    kong_ingress_dbless   = var.ingress == "kong" ? base64gzip(file("${path.module}/manifests/kong-all-in-one-dbless.yaml")) : ""
+    k8s_dashboard = var.k8s_dashboard == true ? base64gzip(templatefile("${path.module}/manifests/k8s-dashboard.yaml", {
+      k8s_dash_ver = var.k8s_dashboard_version
+    })) : ""
+    cert_manager     = var.cert_manager == true ? local.install_cert_manager : ""
+    sys_upgrade_ctrl = var.sys_upgrade_ctrl == true ? base64gzip(file("${path.module}/manifests/system-upgrade-controller.yaml")) : ""
   })
 }
 

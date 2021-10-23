@@ -1,4 +1,4 @@
-# v0.1.32 - Source: https://github.com/digitalocean/digitalocean-cloud-controller-manager/blob/master/releases/v0.1.32.yml
+# v0.1.34 - Source: https://github.com/digitalocean/digitalocean-cloud-controller-manager/blob/v0.1.34/releases/v0.1.34.yml
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -33,7 +33,7 @@ spec:
         - key: "node-role.kubernetes.io/master"
           effect: NoSchedule
       containers:
-      - image: digitalocean/digitalocean-cloud-controller-manager:v0.1.32
+      - image: digitalocean/digitalocean-cloud-controller-manager:v0.1.34
         name: digitalocean-cloud-controller-manager
         command:
           - "/bin/digitalocean-cloud-controller-manager"

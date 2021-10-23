@@ -36,30 +36,50 @@ kubectl -n kube-system create secret generic digitalocean --from-literal=access-
 # create digitalocean env variables via configmap (for CCM)
 kubectl -n kube-system create configmap digitalocean --from-literal=do-cluster-vpc-id=${do_cluster_vpc_id} --from-literal=public-access-firewall-name=${do_ccm_fw_name} --from-literal=public-access-firewall-tags=${do_ccm_fw_tags}
 
-# install certmanager
-${cert_manager}
-
 # ccm
-cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/do-ccm.yaml
+base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/do-ccm.yaml
 ${ccm_manifest}
 EOF
 
 # csi crds
-cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/crds.yaml
+base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/crds.yaml
 ${csi_crds_manifest}
 EOF
 
 # csi driver
-cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/driver.yaml
+base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/driver.yaml
 ${csi_driver_manifest}
 EOF
 
 # csi snapshot controller
-cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/snapshot-controller.yaml
+base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/snapshot-controller.yaml
 ${csi_sc_manifest}
 EOF
 
 # kubernetes dashboard
-cat <<'EOF' | sudo tee /var/lib/rancher/k3s/server/manifests/k8s-dashboard.yaml
+base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/k8s-dashboard.yaml
 ${k8s_dashboard}
+EOF
+
+# install certmanager
+${cert_manager}
+
+# traefik ingress
+base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/traefik-custom.yaml
+${traefik_ingress}
+EOF
+
+# kong ingress controller with postgres
+base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/kong-all-in-one-postgres.yaml
+${kong_ingress_postgres}
+EOF
+
+# kong ingress controller db-less
+base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/kong-all-in-one-dbless.yaml
+${kong_ingress_dbless}
+EOF
+
+# system upgrade controller
+base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/system-upgrade-controller.yaml
+${sys_upgrade_ctrl}
 EOF

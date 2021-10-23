@@ -42,7 +42,7 @@ jobs:
             throw "failed to run `terraform fmt -check -recursive -diff`"
 
   terraform-plan:
-    name: Terraform Plan
+    name: Terraform Initialize, Validate, Plan
     needs: terraform-fmt
     runs-on: ubuntu-latest
     env:

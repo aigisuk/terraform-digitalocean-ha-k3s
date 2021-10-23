@@ -104,7 +104,7 @@ Functional examples are included in the
 | ssh_key_fingerprints | List of SSH Key fingerprints | list(string) | N/A | yes |
 | region | Region in which to deploy cluster | string | `fra1` | no |
 | vpc_network_range | Range of IP addresses for the VPC in CIDR notation | string | `10.10.10.0/24` | no |
-| k3s_channel | K3s release channel. `stable`, `latest`, `testing` or a specific channel or version e.g. `v1.20`, `v1.19.8+k3s1` | string | `"stable"` | no |
+| k3s_channel | K3s release channel. `stable`, `latest`, `testing` or a specific channel or version e.g. `v1.22`, `v1.19.8+k3s1` | string | `"stable"` | no |
 | database_user | Database username | string | `"k3s_default_user"` | no |
 | database_engine | Database engine. `postgres` (v13) or `mysql` (v8) | string | `"postgres"` | no |
 | database_size | Database Droplet size associated with the cluster e.g. `db-s-1vcpu-1gb` | string |`"db-s-1vcpu-1gb"` | no |
@@ -116,11 +116,11 @@ Functional examples are included in the
 | agent_count | Number of agent (worker) nodes to provision | number | `1`| no |
 | server_taint_criticalonly | Allow only critical addons to be scheduled on server nodes? (thus preventing workloads from being launched on them) | bool | `true`| no |
 | sys_upgrade_ctrl | Pre-install the [System Upgrade Controller](https://github.com/rancher/system-upgrade-controller) | bool | `false`| no |
-| ingress | Install an ingress controller. `none`, `kong`, `kong_pg` | string | `"none"`| no |
+| ingress | Install an ingress controller. `none`, `traefik`, `kong`, `kong_pg` | string | `"none"`| no |
 | k8s_dashboard | Pre-Install [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) | bool | `false`| no |
-| k8s_dashboard_version | [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) version | string | `2.3.1`| no |
+| k8s_dashboard_version | [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) version | string | `2.4.0`| no |
 | cert_manager | Pre-Install [cert-manager](https://cert-manager.io/) | bool | `false`| no |
-| cert_manager_version | [cert-manager](https://cert-manager.io/) version | string | `1.5.3`| no |
+| cert_manager_version | [cert-manager](https://cert-manager.io/) version | string | `1.5.4`| no |
 
 ## Outputs
 
@@ -158,7 +158,7 @@ Select the `Token` option, enter the `admin-user` Bearer Token obtained earlier 
 
 ## Traefik Ingress
 
-Traefik Proxy can pre-installed by setting the `ingress` input variable to `traefik`. The Traefik dashboard is configured by default and protected by Basic Authentication with the username: `admin` and a randomly generated password accessible via your state file.
+[Traefik Proxy](https://doc.traefik.io/traefik/) can pre-installed by setting the `ingress` input variable to `traefik`. The Traefik dashboard is enabled by default and protected by Basic Authentication with the username: `admin` and a randomly generated password accessible via your state file.
 
 Use `kubectl port-forward` to forward a local port to the dashboard:
 

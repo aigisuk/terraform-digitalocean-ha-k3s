@@ -16,11 +16,11 @@ An opinionated Terraform module to provision a high availability [K3s](https://k
 * [x] DigitalOcean's CCM ([Cloud Controller Manager](https://github.com/digitalocean/digitalocean-cloud-controller-manager)) and CSI ([Container Storage Interface](https://github.com/digitalocean/csi-digitalocean)) plugins are pre-installed. Enables the cluster to leverage DigitalOcean's load balancer and volume resources
 * [x] Option to make Servers (Masters) schedulable. Default is `false` i.e. `CriticalAddonsOnly=true:NoExecute`
 * [x] Cluster database engine is configurable. Choose between **PostgreSQL** (v11, default) or **MySQL** (v8)
-* [x] Pre-install [System Upgrade Controller](https://github.com/rancher/system-upgrade-controller) to manage [automated upgrades](https://rancher.com/docs/k3s/latest/en/upgrades/automated/) of the cluster (optional)
-* [x] Pre-install the [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) (optional)
-* [x] Pre-install Jetstack's [cert-manager](https://github.com/jetstack/cert-manager) (optional)
+* [x] Deploy [System Upgrade Controller](https://github.com/rancher/system-upgrade-controller) to manage [automated upgrades](https://rancher.com/docs/k3s/latest/en/upgrades/automated/) of the cluster [default: `false`]
+* [x] Deploy the [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) [default: `false`]
+* [x] Deploy Jetstack's [cert-manager](https://github.com/jetstack/cert-manager) [default: `false`]
 * [x] Firewalled Nodes & Database
-* [ ] Pre-install an ingress controller from **Kong v2.6** (Postgres or [DB-less mode](https://docs.konghq.com/gateway-oss/2.6.x/db-less-and-declarative-config/)), **Nginx** or **Traefik v2** (optional)
+* [ ] Deploy an ingress controller from **Kong v2.6** (Postgres or [DB-less mode](https://docs.konghq.com/gateway-oss/2.6.x/db-less-and-declarative-config/)), **Nginx** or **Traefik v2** [default: `none`]
 * [ ] Generate custom `kubeconfig` file (optional)
 
 ## Compatibility/Requirements
@@ -115,11 +115,11 @@ Functional examples are included in the
 | server_count | Number of server (master) nodes to provision | number | `2`| no |
 | agent_count | Number of agent (worker) nodes to provision | number | `1`| no |
 | server_taint_criticalonly | Allow only critical addons to be scheduled on server nodes? (thus preventing workloads from being launched on them) | bool | `true`| no |
-| sys_upgrade_ctrl | Pre-install the [System Upgrade Controller](https://github.com/rancher/system-upgrade-controller) | bool | `false`| no |
-| ingress | Install an ingress controller. `none`, `traefik`, `kong`, `kong_pg` | string | `"none"`| no |
-| k8s_dashboard | Pre-Install [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) | bool | `false`| no |
+| sys_upgrade_ctrl | Deploy the [System Upgrade Controller](https://github.com/rancher/system-upgrade-controller) | bool | `false`| no |
+| ingress | Deploy an ingress controller. `none`, `traefik`, `kong`, `kong_pg` | string | `"none"`| no |
+| k8s_dashboard | Deploy [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) | bool | `false`| no |
 | k8s_dashboard_version | [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) version | string | `2.4.0`| no |
-| cert_manager | Pre-Install [cert-manager](https://cert-manager.io/) | bool | `false`| no |
+| cert_manager | Deploy [cert-manager](https://cert-manager.io/) | bool | `false`| no |
 | cert_manager_version | [cert-manager](https://cert-manager.io/) version | string | `1.5.4`| no |
 
 ## Outputs
@@ -128,9 +128,9 @@ Functional examples are included in the
 |------|-------------|
 | cluster_summary | A summary of the cluster's provisioned resources. |
 
-## Pre-Install the Kubernetes Dashboard
+## Deploy the Kubernetes Dashboard
 
-The [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) can pre-installed by setting the `k8s_dashboard` input variable to `true`.
+The [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) can be deployed by setting the `k8s_dashboard` input variable to `true`.
 
 This auto-creates a Service Account named `admin-user` with admin privileges granted. The following `kubectl` command outputs the Bearer Token for the `admin-user`:
 
@@ -158,7 +158,7 @@ Select the `Token` option, enter the `admin-user` Bearer Token obtained earlier 
 
 ## Traefik Ingress
 
-[Traefik Proxy](https://doc.traefik.io/traefik/) can pre-installed by setting the `ingress` input variable to `traefik`. The Traefik dashboard is enabled by default and protected by Basic Authentication with the username: `admin` and a randomly generated password accessible via your state file.
+[Traefik Proxy](https://doc.traefik.io/traefik/) ingress can be deployed by setting the `ingress` input variable to `traefik`. The Traefik dashboard is enabled by default.
 
 Use `kubectl port-forward` to forward a local port to the dashboard:
 
@@ -171,8 +171,6 @@ To access the Traefik Dashboard go:
 http://localhost:9000/dashboard/
 ```
 > Don't forget the trailing slash
-
-At the prompt enter the username `admin` and password retrieved from your state file.
 
 ## Cost
 

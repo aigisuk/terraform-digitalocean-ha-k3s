@@ -20,8 +20,6 @@ locals {
 
   install_cert_manager = "wget --quiet -P /var/lib/rancher/k3s/server/manifests/ https://github.com/jetstack/cert-manager/releases/download/v${var.cert_manager_version}/cert-manager.yaml"
 
-  traefik_auth_secret = var.ingress == "traefik" ? base64encode("admin:${bcrypt(random_password.traefik[0].result)}") : null
-
   servers_init = [
     for key, server in digitalocean_droplet.k3s_server_init :
     {

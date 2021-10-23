@@ -24,9 +24,7 @@ resource "digitalocean_droplet" "k3s_server_init" {
     csi_crds_manifest   = base64gzip(file("${path.module}/manifests/do-csi/crds.yaml"))
     csi_driver_manifest = base64gzip(file("${path.module}/manifests/do-csi/driver.yaml"))
     csi_sc_manifest     = base64gzip(file("${path.module}/manifests/do-csi/snapshot-controller.yaml"))
-    traefik_ingress = var.ingress == "traefik" ? base64gzip(templatefile("${path.module}/manifests/traefik-custom.yaml", {
-      traefik_auth_secret = local.traefik_auth_secret
-    })) : ""
+    traefik_ingress = var.ingress == "traefik" ? base64gzip(file("${path.module}/manifests/traefik-custom.yaml")) : ""
     kong_ingress_postgres = var.ingress == "kong_pg" ? base64gzip(file("${path.module}/manifests/kong-all-in-one-postgres.yaml")) : ""
     kong_ingress_dbless   = var.ingress == "kong" ? base64gzip(file("${path.module}/manifests/kong-all-in-one-dbless.yaml")) : ""
     k8s_dashboard = var.k8s_dashboard == true ? base64gzip(templatefile("${path.module}/manifests/k8s-dashboard.yaml", {

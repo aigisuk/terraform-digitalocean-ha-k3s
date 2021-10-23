@@ -36,9 +36,6 @@ kubectl -n kube-system create secret generic digitalocean --from-literal=access-
 # create digitalocean env variables via configmap (for CCM)
 kubectl -n kube-system create configmap digitalocean --from-literal=do-cluster-vpc-id=${do_cluster_vpc_id} --from-literal=public-access-firewall-name=${do_ccm_fw_name} --from-literal=public-access-firewall-tags=${do_ccm_fw_tags}
 
-# install certmanager
-${cert_manager}
-
 # ccm
 base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/do-ccm.yaml
 ${ccm_manifest}
@@ -62,6 +59,14 @@ EOF
 # kubernetes dashboard
 base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/k8s-dashboard.yaml
 ${k8s_dashboard}
+EOF
+
+# install certmanager
+${cert_manager}
+
+# traefik ingress
+base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/traefik-custom.yaml
+${traefik_ingress}
 EOF
 
 # kong ingress controller with postgres

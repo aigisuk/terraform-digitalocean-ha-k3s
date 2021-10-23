@@ -75,7 +75,7 @@ spec:
       serviceAccount: csi-do-controller-sa
       containers:
         - name: csi-provisioner
-          image: quay.io/k8scsi/csi-provisioner:v2.0.2
+          image: quay.io/k8scsi/csi-provisioner:v2.0.4
           args:
             - "--csi-address=$(ADDRESS)"
             - "--default-fstype=ext4"
@@ -88,7 +88,7 @@ spec:
             - name: socket-dir
               mountPath: /var/lib/csi/sockets/pluginproxy/
         - name: csi-attacher
-          image: quay.io/k8scsi/csi-attacher:v3.0.0
+          image: quay.io/k8scsi/csi-attacher:v3.0.2
           args:
             - "--csi-address=$(ADDRESS)"
             - "--v=5"
@@ -100,7 +100,7 @@ spec:
             - name: socket-dir
               mountPath: /var/lib/csi/sockets/pluginproxy/
         - name: csi-snapshotter
-          image: quay.io/k8scsi/csi-snapshotter:v3.0.0
+          image: quay.io/k8scsi/csi-snapshotter:v3.0.2
           args:
             - "--csi-address=$(ADDRESS)"
             - "--v=5"
@@ -112,7 +112,7 @@ spec:
             - name: socket-dir
               mountPath: /var/lib/csi/sockets/pluginproxy/
         - name: csi-resizer
-          image: quay.io/k8scsi/csi-resizer:v1.0.0
+          image: quay.io/k8scsi/csi-resizer:v1.0.1
           args:
             - "--csi-address=$(ADDRESS)"
             - "--timeout=30s"
@@ -127,7 +127,7 @@ spec:
             - name: socket-dir
               mountPath: /var/lib/csi/sockets/pluginproxy/
         - name: csi-do-plugin
-          image: digitalocean/do-csi-plugin:v2.1.1
+          image: digitalocean/do-csi-plugin:v2.1.2
           args :
             - "--endpoint=$(CSI_ENDPOINT)"
             - "--token=$(DIGITALOCEAN_ACCESS_TOKEN)"
@@ -381,7 +381,7 @@ spec:
             - name: registration-dir
               mountPath: /registration/
         - name: csi-do-plugin
-          image: digitalocean/do-csi-plugin:v2.1.1
+          image: digitalocean/do-csi-plugin:v2.1.2
           args :
             - "--endpoint=$(CSI_ENDPOINT)"
             - "--url=$(DIGITALOCEAN_API_URL)"

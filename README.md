@@ -20,12 +20,12 @@ An opinionated Terraform module to provision a high availability [K3s](https://k
 * [x] Pre-install the [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) (optional)
 * [x] Pre-install Jetstack's [cert-manager](https://github.com/jetstack/cert-manager) (optional)
 * [x] Firewalled Nodes & Database
-* [ ] Pre-install an ingress controller from **Kong** (Postgres or [DB-less mode](https://docs.konghq.com/gateway-oss/2.4.x/db-less-and-declarative-config/)), **Nginx** or **Traefik v2** (optional)
+* [ ] Pre-install an ingress controller from **Kong v2.6** (Postgres or [DB-less mode](https://docs.konghq.com/gateway-oss/2.6.x/db-less-and-declarative-config/)), **Nginx** or **Traefik v2** (optional)
 * [ ] Generate custom `kubeconfig` file (optional)
 
 ## Compatibility/Requirements
 
-* Requires [Terraform](https://www.terraform.io/downloads.html) 0.13 or higher.
+* Requires [Terraform](https://www.terraform.io/downloads.html) 0.15 or higher.
 * A DigitalOcean account and [personal access token](https://docs.digitalocean.com/reference/api/create-personal-access-token/) for accessing the DigitalOcean API - [Use this referral link for $100 free credit](https://m.do.co/c/6b3bf6d79f7d)
 
 ## Tutorial
@@ -120,7 +120,7 @@ Functional examples are included in the
 | k8s_dashboard | Pre-Install [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) | bool | `false`| no |
 | k8s_dashboard_version | [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) version | string | `2.3.1`| no |
 | cert_manager | Pre-Install [cert-manager](https://cert-manager.io/) | bool | `false`| no |
-| cert_manager_version | [cert-manager](https://cert-manager.io/) version | string | `1.4.0`| no |
+| cert_manager_version | [cert-manager](https://cert-manager.io/) version | string | `1.5.3`| no |
 
 ## Outputs
 
@@ -155,6 +155,24 @@ https://localhost:8080
 Select the `Token` option, enter the `admin-user` Bearer Token obtained earlier and click `Sign in`:
 
 ![Kubernetes-Dashboard-Login](https://user-images.githubusercontent.com/12916656/117087905-c3d99800-ad48-11eb-9245-6a73578c5e3a.png)
+
+## Traefik Ingress
+
+Traefik Proxy can pre-installed by setting the `ingress` input variable to `traefik`. The Traefik dashboard is configured by default and protected by Basic Authentication with the username: `admin` and a randomly generated password accessible via your state file.
+
+Use `kubectl port-forward` to forward a local port to the dashboard:
+
+```
+kubectl port-forward -n traefik $(kubectl get pods -n traefik --selector=app=traefik --output=name) 9000:9000
+```
+
+To access the Traefik Dashboard go:
+```
+http://localhost:9000/dashboard/
+```
+> Don't forget the trailing slash
+
+At the prompt enter the username `admin` and password retrieved from your state file.
 
 ## Cost
 

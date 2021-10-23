@@ -33,7 +33,7 @@ data:
   SYSTEM_UPGRADE_JOB_ACTIVE_DEADLINE_SECONDS: "900"
   SYSTEM_UPGRADE_JOB_BACKOFF_LIMIT: "99"
   SYSTEM_UPGRADE_JOB_IMAGE_PULL_POLICY: "Always"
-  SYSTEM_UPGRADE_JOB_KUBECTL_IMAGE: "rancher/kubectl:v1.18.3"
+  SYSTEM_UPGRADE_JOB_KUBECTL_IMAGE: "rancher/kubectl:v1.18.20"
   SYSTEM_UPGRADE_JOB_PRIVILEGED: "true"
   SYSTEM_UPGRADE_JOB_TTL_SECONDS_AFTER_FINISH: "900"
   SYSTEM_UPGRADE_PLAN_POLLING_INTERVAL: "15m"
@@ -57,7 +57,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                  - {key: "node-role.kubernetes.io/master", operator: In, values: ["true"]}
+                  - {key: "node-role.kubernetes.io/master", operator: Exists}
       serviceAccountName: system-upgrade
       tolerations:
         - key: "CriticalAddonsOnly"
@@ -65,9 +65,18 @@ spec:
         - key: "node-role.kubernetes.io/master"
           operator: "Exists"
           effect: "NoSchedule"
+        - key: "node-role.kubernetes.io/controlplane"
+          operator: "Exists"
+          effect: "NoSchedule"
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+        - key: "node-role.kubernetes.io/etcd"
+          operator: "Exists"
+          effect: "NoExecute"
       containers:
         - name: system-upgrade-controller
-          image: rancher/system-upgrade-controller:v0.6.2
+          image: rancher/system-upgrade-controller:v0.8.0
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
@@ -84,6 +93,10 @@ spec:
           volumeMounts:
             - name: etc-ssl
               mountPath: /etc/ssl
+            - name: etc-pki
+              mountPath: /etc/pki
+            - name: etc-ca-certificates
+              mountPath: /etc/ca-certificates
             - name: tmp
               mountPath: /tmp
       volumes:
@@ -91,5 +104,13 @@ spec:
           hostPath:
             path: /etc/ssl
             type: Directory
+        - name: etc-pki
+          hostPath:
+            path: /etc/pki
+            type: DirectoryOrCreate
+        - name: etc-ca-certificates
+          hostPath:
+            path: /etc/ca-certificates
+            type: DirectoryOrCreate
         - name: tmp
           emptyDir: {}

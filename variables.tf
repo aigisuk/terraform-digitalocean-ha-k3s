@@ -105,7 +105,7 @@ variable "k8s_dashboard" {
 variable "k8s_dashboard_version" {
   type        = string
   description = "Kubernetes Dashboard version"
-  default     = "2.3.1"
+  default     = "2.4.0" # https://github.com/kubernetes/dashboard/releases
 }
 
 variable "cert_manager" {
@@ -117,7 +117,7 @@ variable "cert_manager" {
 variable "cert_manager_version" {
   type        = string
   description = "cert-manager version"
-  default     = "1.4.0"
+  default     = "1.5.4" # https://github.com/jetstack/cert-manager/releases
 
 }
 

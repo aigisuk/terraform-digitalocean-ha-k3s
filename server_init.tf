@@ -2,13 +2,13 @@ resource "digitalocean_droplet" "k3s_server_init" {
   count = 1
   name  = "k3s-server-${var.region}-${random_id.server_node_id[count.index].hex}-1"
 
-  image              = "ubuntu-20-04-x64"
-  tags               = [local.server_droplet_tag]
-  region             = var.region
-  size               = var.server_size
-  monitoring         = true
-  vpc_uuid           = digitalocean_vpc.k3s_vpc.id
-  ssh_keys           = var.ssh_key_fingerprints
+  image      = "ubuntu-20-04-x64"
+  tags       = [local.server_droplet_tag]
+  region     = var.region
+  size       = var.server_size
+  monitoring = true
+  vpc_uuid   = digitalocean_vpc.k3s_vpc.id
+  ssh_keys   = var.ssh_key_fingerprints
   user_data = templatefile("${path.module}/user_data/ks3_server_init.sh", {
     k3s_channel         = var.k3s_channel
     k3s_token           = random_password.k3s_token.result

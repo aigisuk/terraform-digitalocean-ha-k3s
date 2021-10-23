@@ -3,7 +3,7 @@ An opinionated Terraform module to provision a high availability [K3s](https://k
 
 ![k3s_cluster_project_on_digitalocean](https://user-images.githubusercontent.com/12916656/118027873-5508ca00-b35a-11eb-9346-4a605942857b.png)
 
-![k3s_on_digitalocean_term_demo](examples/ha-k3s-do-demo.svg)
+<!-- ![k3s_on_digitalocean_term_demo](examples/ha-k3s-do-demo.svg) -->
 
 ## Features
 * [x] High Availability K3s Cluster provisioned on the DigitalOcean platform

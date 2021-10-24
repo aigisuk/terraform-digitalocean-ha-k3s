@@ -1,7 +1,7 @@
 # Terraform DigitalOcean HA K3S Module
 An opinionated Terraform module to provision a high availability [K3s](https://k3s.io/) cluster with external database on the DigitalOcean cloud platform. Perfect for development or testing.
 
-![k3s_cluster_project_on_digitalocean](https://user-images.githubusercontent.com/12916656/118027873-5508ca00-b35a-11eb-9346-4a605942857b.png)
+![2021-10-24 05_45_35-k3s-cluster_project_DigitalOcean](https://user-images.githubusercontent.com/12916656/138615757-c73b90bc-9fe7-4214-90c7-acfad2f49222.png)
 
 <!-- ![k3s_on_digitalocean_term_demo](examples/ha-k3s-do-demo.svg) -->
 

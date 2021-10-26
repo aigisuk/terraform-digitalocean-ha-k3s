@@ -69,6 +69,11 @@ base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/traefi
 ${traefik_ingress}
 EOF
 
+# nginx ingress
+base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/ingress-nginx.yaml
+${nginx_ingress}
+EOF
+
 # kong ingress controller with postgres
 base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/kong-all-in-one-postgres.yaml
 ${kong_ingress_postgres}

@@ -20,7 +20,7 @@ An opinionated Terraform module to provision a high availability [K3s](https://k
 * [x] Deploy the [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) [default: `false`]
 * [x] Deploy Jetstack's [cert-manager](https://github.com/jetstack/cert-manager) [default: `false`]
 * [x] Firewalled Nodes & Database
-* [ ] Deploy an ingress controller from **Kong v2.6** (Postgres or [DB-less mode](https://docs.konghq.com/gateway-oss/2.6.x/db-less-and-declarative-config/)), **Nginx** or **Traefik v2** [default: `none`]
+* [x] Deploy an ingress controller from **Kong** (Postgres or [DB-less mode](https://docs.konghq.com/gateway-oss/2.6.x/db-less-and-declarative-config/)), **Nginx** or **Traefik v2** [default: `none`]
 * [ ] Generate custom `kubeconfig` file (optional)
 
 ## Compatibility/Requirements
@@ -120,7 +120,7 @@ Functional examples are included in the
 | k8s_dashboard | Deploy [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) | bool | `false`| no |
 | k8s_dashboard_version | [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) version | string | `2.4.0`| no |
 | cert_manager | Deploy [cert-manager](https://cert-manager.io/) | bool | `false`| no |
-| cert_manager_version | [cert-manager](https://cert-manager.io/) version | string | `1.5.4`| no |
+| cert_manager_version | [cert-manager](https://cert-manager.io/) version | string | `1.6.0`| no |
 
 ## Outputs
 

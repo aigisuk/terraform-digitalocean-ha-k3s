@@ -117,7 +117,7 @@ variable "cert_manager" {
 variable "cert_manager_version" {
   type        = string
   description = "cert-manager version"
-  default     = "1.5.4" # https://github.com/jetstack/cert-manager/releases
+  default     = "1.6.0" # https://github.com/jetstack/cert-manager/releases
 
 }
 

@@ -172,7 +172,7 @@ http://localhost:9000/dashboard/
 ```
 > Don't forget the trailing slash
 
-## Cost
+## Cost Analysis
 
 A default deployment of this module provisions the following resources:
 

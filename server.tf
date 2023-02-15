@@ -3,7 +3,7 @@ resource "digitalocean_droplet" "k3s_server" {
   name  = "k3s-server-${var.region}-${random_id.server_node_id[count.index + 1].hex}-${count.index + 2}"
 
   image      = "ubuntu-20-04-x64"
-  tags       = [local.server_droplet_tag]
+  tags       = [digitalocean_tag.server.id]
   region     = var.region
   size       = var.server_size
   monitoring = true
@@ -16,6 +16,7 @@ resource "digitalocean_droplet" "k3s_server" {
     k3s_lb_ip       = digitalocean_loadbalancer.k3s_lb.ip
     db_cluster_uri  = local.db_cluster_uri
     critical_taint  = local.taint_critical
+    enable_traefik  = local.enable_traefik
   })
   depends_on = [
     digitalocean_droplet.k3s_server_init

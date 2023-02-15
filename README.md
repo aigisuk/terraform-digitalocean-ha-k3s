@@ -83,7 +83,7 @@ cluster_summary = {
 }
 ```
 
-To manage K3s from outside the cluster, SSH into any Server node and copy the contents of `/etc/rancher/k3s/k3s.yaml` to `~/.kube/config` on an external machine where you have installed `kubectl`.
+To manage K3s from outside the cluster, SSH into any Server node and copy the contents of `/etc/rancher/k3s/k3s.yaml` to `~/.kube/config` on an external machine with `kubectl` installed.
 ```
 sudo scp -i .ssh/your_private_key root@203.0.113.11:/etc/rancher/k3s/k3s.yaml ~/.kube/config
 ```
@@ -109,7 +109,7 @@ Functional examples are included in the
 | database_engine | Database engine. `postgres` (v13) or `mysql` (v8) | string | `"postgres"` | no |
 | database_size | Database Droplet size associated with the cluster e.g. `db-s-1vcpu-1gb` | string |`"db-s-1vcpu-1gb"` | no |
 | database_node_count | Number of nodes that comprise the database cluster | number | `1`| no |
-| flannel_backend | Flannel Backend Type. Valid options include `vxlan`, `ipsec` or `wireguard` | string | `vxlan`| no |
+| flannel_backend | Flannel Backend Type. Valid options include `vxlan`, `ipsec` or `wireguard-native` | string | `vxlan`| no |
 | server_size | Server droplet size. e.g. `s-1vcpu-2gb` | string | `s-1vcpu-2gb`| no |
 | agent_size | Agent droplet size. e.g. `s-1vcpu-2gb` | string | `s-1vcpu-2gb`| no |
 | server_count | Number of server (master) nodes to provision | number | `2`| no |
@@ -118,9 +118,10 @@ Functional examples are included in the
 | sys_upgrade_ctrl | Deploy the [System Upgrade Controller](https://github.com/rancher/system-upgrade-controller) | bool | `false`| no |
 | ingress | Deploy an ingress controller. `none`, `traefik`, `kong`, `kong_pg` | string | `"none"`| no |
 | k8s_dashboard | Deploy [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) | bool | `false`| no |
-| k8s_dashboard_version | [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) version | string | `2.4.0`| no |
+| k8s_dashboard_version | [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) version | string | `2.7.0`| no |
 | cert_manager | Deploy [cert-manager](https://cert-manager.io/) | bool | `false`| no |
-| cert_manager_version | [cert-manager](https://cert-manager.io/) version | string | `1.6.0`| no |
+| cert_manager_version | [cert-manager](https://cert-manager.io/) version | string | `1.11.0`| no |
+| traefik_version | [traefik](https://github.com/traefik/traefik-helm-chart) version | string | `2.9.7`| no |
 
 ## Outputs
 
@@ -172,7 +173,7 @@ http://localhost:9000/dashboard/
 ```
 > Don't forget the trailing slash
 
-## Cost
+## Cost Analysis
 
 A default deployment of this module provisions the following resources:
 

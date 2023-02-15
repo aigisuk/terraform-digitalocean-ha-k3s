@@ -20,7 +20,7 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=${k3s_channel} K3S_TOKEN=${k3
     --flannel-iface=eth1 \
     --disable local-storage \
     --disable-cloud-controller \
-    --disable traefik \
+    ${enable_traefik}
     --disable servicelb \
     --kubelet-arg 'cloud-provider=external'
 
@@ -53,6 +53,11 @@ EOF
 
 # csi snapshot controller
 base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/snapshot-controller.yaml
+${csi_sc_manifest}
+EOF
+
+# csi snapshot validation webhook
+base64 -d <<'EOF' | zcat | sudo tee /var/lib/rancher/k3s/server/manifests/snapshot-validation-webhook.yaml
 ${csi_sc_manifest}
 EOF
 

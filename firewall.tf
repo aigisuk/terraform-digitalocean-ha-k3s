@@ -10,7 +10,7 @@ resource "digitalocean_firewall" "ccm_firewall" {
 resource "digitalocean_firewall" "k3s_firewall" {
   name = "k3s-firewall"
 
-  tags = [local.server_droplet_tag, local.agent_droplet_tag]
+  tags = [digitalocean_tag.server.name, digitalocean_tag.agent.name]
 
   inbound_rule {
     # Allow ICMP communication on all ports to defined 'tags' via VPC Network

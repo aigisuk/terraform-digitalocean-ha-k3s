@@ -1,4 +1,3 @@
-# v0.1.34 - Source: https://github.com/digitalocean/digitalocean-cloud-controller-manager/blob/v0.1.34/releases/v0.1.34.yml
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -15,12 +14,11 @@ spec:
     metadata:
       labels:
         app: digitalocean-cloud-controller-manager
-      annotations:
-        scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
       dnsPolicy: Default
       hostNetwork: true
       serviceAccountName: cloud-controller-manager
+      priorityClassName: system-cluster-critical
       tolerations:
         # this taint is set by all kubelets running `--cloud-provider=external`
         # so we should tolerate it to schedule the digitalocean ccm
@@ -30,10 +28,14 @@ spec:
         - key: "CriticalAddonsOnly"
           operator: "Exists"
         # cloud controller manages should be able to run on masters
+        # TODO: remove this when ccm is not supported on k8s <= 1.23
         - key: "node-role.kubernetes.io/master"
           effect: NoSchedule
+        # k8s clusters 1.24+ uses control-plane name instead of master
+        - key: "node-role.kubernetes.io/control-plane"
+          effect: NoSchedule
       containers:
-      - image: digitalocean/digitalocean-cloud-controller-manager:v0.1.34
+      - image: digitalocean/digitalocean-cloud-controller-manager:v0.1.42
         name: digitalocean-cloud-controller-manager
         command:
           - "/bin/digitalocean-cloud-controller-manager"
@@ -78,22 +80,17 @@ metadata:
     rbac.authorization.kubernetes.io/autoupdate: "true"
   name: system:cloud-controller-manager
 rules:
-# The following is necessary to support leader election when running DO-CCM on
-# a multi-master cluster. We leave it commented out on the assumption that the
-# typical user is not running a multi-master cluster and therefore does not
-# need the additional permissions.
-#
-# - apiGroups:
-#   - coordination.k8s.io
-#   resources:
-#   - leases
-#   verbs:
-#   - get
-#   - watch
-#   - list
-#   - create
-#   - update
-#   - delete
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - get
+  - watch
+  - list
+  - create
+  - update
+  - delete
 - apiGroups:
   - ""
   resources:

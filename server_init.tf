@@ -3,28 +3,31 @@ resource "digitalocean_droplet" "k3s_server_init" {
   name  = "k3s-server-${var.region}-${random_id.server_node_id[count.index].hex}-1"
 
   image      = "ubuntu-20-04-x64"
-  tags       = [local.server_droplet_tag]
+  tags       = [digitalocean_tag.server.id]
   region     = var.region
   size       = var.server_size
   monitoring = true
   vpc_uuid   = digitalocean_vpc.k3s_vpc.id
   ssh_keys   = var.ssh_key_fingerprints
   user_data = templatefile("${path.module}/user_data/ks3_server_init.sh", {
-    k3s_channel           = var.k3s_channel
-    k3s_token             = random_password.k3s_token.result
-    do_token              = var.do_token
-    do_cluster_vpc_id     = digitalocean_vpc.k3s_vpc.id
-    do_ccm_fw_name        = digitalocean_firewall.ccm_firewall.name
-    do_ccm_fw_tags        = local.ccm_fw_tags
-    flannel_backend       = var.flannel_backend
-    k3s_lb_ip             = digitalocean_loadbalancer.k3s_lb.ip
-    db_cluster_uri        = local.db_cluster_uri
-    critical_taint        = local.taint_critical
-    ccm_manifest          = base64gzip(file("${path.module}/manifests/do-ccm.yaml"))
-    csi_crds_manifest     = base64gzip(file("${path.module}/manifests/do-csi/crds.yaml"))
-    csi_driver_manifest   = base64gzip(file("${path.module}/manifests/do-csi/driver.yaml"))
-    csi_sc_manifest       = base64gzip(file("${path.module}/manifests/do-csi/snapshot-controller.yaml"))
-    traefik_ingress       = var.ingress == "traefik" ? base64gzip(file("${path.module}/manifests/traefik-custom.yaml")) : ""
+    k3s_channel         = var.k3s_channel
+    k3s_token           = random_password.k3s_token.result
+    do_token            = var.do_token
+    do_cluster_vpc_id   = digitalocean_vpc.k3s_vpc.id
+    do_ccm_fw_name      = digitalocean_firewall.ccm_firewall.name
+    do_ccm_fw_tags      = local.ccm_fw_tags
+    flannel_backend     = var.flannel_backend
+    k3s_lb_ip           = digitalocean_loadbalancer.k3s_lb.ip
+    db_cluster_uri      = local.db_cluster_uri
+    critical_taint      = local.taint_critical
+    ccm_manifest        = base64gzip(file("${path.module}/manifests/do-ccm.yaml"))
+    csi_crds_manifest   = base64gzip(file("${path.module}/manifests/do-csi/crds.yaml"))
+    csi_driver_manifest = base64gzip(file("${path.module}/manifests/do-csi/driver.yaml"))
+    csi_sc_manifest     = base64gzip(file("${path.module}/manifests/do-csi/snapshot-controller.yaml"))
+    enable_traefik      = local.enable_traefik
+    traefik_ingress = var.ingress == "traefik" ? base64gzip(templatefile("${path.module}/manifests/traefik-custom.yaml", {
+      traefik_ver = var.traefik_version
+    })) : ""
     nginx_ingress         = var.ingress == "nginx" ? base64gzip(file("${path.module}/manifests/ingress-nginx.yaml")) : ""
     kong_ingress_postgres = var.ingress == "kong_pg" ? base64gzip(file("${path.module}/manifests/kong-all-in-one-postgres.yaml")) : ""
     kong_ingress_dbless   = var.ingress == "kong" ? base64gzip(file("${path.module}/manifests/kong-all-in-one-dbless.yaml")) : ""

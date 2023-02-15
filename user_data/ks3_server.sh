@@ -19,6 +19,6 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=${k3s_channel} K3S_TOKEN=${k3
     --flannel-iface=eth1 \
     --disable local-storage \
     --disable-cloud-controller \
-    --disable traefik \
+    ${enable_traefik}
     --disable servicelb \
     --kubelet-arg 'cloud-provider=external'

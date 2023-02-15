@@ -4,6 +4,6 @@ resource "digitalocean_database_firewall" "k3s" {
 
   rule {
     type  = "tag"
-    value = local.server_droplet_tag
+    value = digitalocean_tag.server.name
   }
 }

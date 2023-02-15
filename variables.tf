@@ -63,8 +63,8 @@ variable "flannel_backend" {
   description = "Flannel Backend Type. Valid options include vxlan (default), ipsec or wireguard"
   default     = "vxlan"
   validation {
-    condition     = length(regexall("^ipsec|vxlan|wireguard$", var.flannel_backend)) > 0
-    error_message = "Invalid Flannel backend value. Valid backend types are vxlan, ipsec & wireguard."
+    condition     = length(regexall("^ipsec|vxlan|wireguard-native$", var.flannel_backend)) > 0
+    error_message = "Invalid Flannel backend value. Valid backend types are vxlan, ipsec & wireguard-native."
   }
 }
 
@@ -105,7 +105,7 @@ variable "k8s_dashboard" {
 variable "k8s_dashboard_version" {
   type        = string
   description = "Kubernetes Dashboard version"
-  default     = "2.4.0" # https://github.com/kubernetes/dashboard/releases
+  default     = "2.7.0" # https://github.com/kubernetes/dashboard/releases
 }
 
 variable "cert_manager" {
@@ -117,7 +117,7 @@ variable "cert_manager" {
 variable "cert_manager_version" {
   type        = string
   description = "cert-manager version"
-  default     = "1.6.0" # https://github.com/jetstack/cert-manager/releases
+  default     = "1.11.0" # https://github.com/jetstack/cert-manager/releases
 
 }
 
@@ -135,4 +135,22 @@ variable "ingress" {
     condition     = length(regexall("^kong|kong_pg|nginx|traefik|none$", var.ingress)) > 0
     error_message = "Invalid ingress type. Valid ingress types are kong, kong_pg, traefik or nginx."
   }
+}
+
+variable "traefik_version" {
+  type        = string
+  description = "Traefik version to install (if enabled)"
+  default     = "2.9.7"
+}
+
+variable "server_tag" {
+  type        = string
+  description = "Server resource tag name."
+  default     = "k3s_server"
+}
+
+variable "agent_tag" {
+  type        = string
+  description = "Agent resource tag name."
+  default     = "k3s_agent"
 }
